@@ -1,0 +1,217 @@
+---
+description: How to generate fixtures
+globs: ["**/*"]
+alwaysApply: true
+---
+
+- Create fixtures for organizations, engagements, and reports in a bug bounty and pentest-as-a-service platform
+- Always use JSON files
+
+# Organisations
+
+- Create organisations that seem to be in switerland, SMEs and bigger ones (like large banks), also organisations from the publicn sectors
+- For domains always use non existing ones that have the tld .foo
+- Names should not exist and should be clearly not identifiable.
+- images should be SVGs
+- Make address fictional
+
+Example Schema:
+
+```json
+{
+  "name": "Helvetia MedTech AG",
+  "description": "An innovative Swiss medical technology company based in Zurich, specialising in diagnostic imaging solutions and surgical assistance systems.",
+  "invoice_email": "invoices@helvetiamedtech.foo",
+  "url": "https://www.helvetiamedtech.foo",
+  "slug": "helvetia-medtech-ag",
+  "address": "Alpenblickstrasse 42, 8049 Zurich, Switzerland"
+}
+```
+
+# Engagements
+
+- Create some (at least one) resonable engagments per Organisation ("Bug Bounty", "Vulnerability Disclosure", "Pentest")
+- Access types for "Public", "Invite Only", "Request Access"
+- Make sure all engagement types are used in the dummy data
+- for Vulnerability Disclosure engagement always add "**Please note:** This is a Vulnerability Disclosure Engagement, no bug bounties are paid out."
+
+
+Example for a bug bounty program
+```json
+{
+
+}
+```
+
+Base briefing for Bug Bounty Programs and Vulnerability Disclosure programs: 
+
+```markdown
+
+The organization operates various services (platforms, services). But only services from explicitly listed domains / URLs are in the scope of the engagement. All other domains or explicitly listed services are therefore not eligible for reward and do not fall under the Legal Safe Harbor Agreement.
+
+By participating in this engagement, security researchers undertake to document information about any vulnerability found exclusively via the platform's designated reporting form and not in any other places. They also agree to keep the found vulnerability secret after reporting it on the platform. Finally, they undertake to upload to the platform any data from customers that they have obtained as part of the test and to delete any local copies afterwards and not to distribute them further.
+
+### Hacking Methods
+
+In participating in the engagement, security researchers agree not to use methods that would adversely affect the tested applications or their users. These include:
+
+- Social engineering
+- Spamming
+- Phishing
+- Denial-of-service attacks or other brute force attacks
+- Physical attacks
+
+In addition to the prohibited hacking methods listed above, security researchers are required to immediately discontinue vulnerability scanning if they determine that their conduct will result in a significant degradation (negative impact on regular users or on the operations team) of the Platform's or Service's operations.
+
+### Qualified vulnerabilities
+
+Any design or implementation problem can be reported that is reproducible and affects security.
+
+Typical examples:
+
+- Cross Site Request Forgery (CSRF)
+- Cross Site Scripting (XSS)
+- Insecure Direct Object Reference
+- Remote Code Execution (RCE)
+- Injection Flaws
+- Information Leakage an Improper Error Handling
+- Unauthorized access to properties or accounts
+
+Other examples:
+
+- Data/information leaks
+- Possibility of data/information exfiltration
+- Backdoors that can be actively exploited
+- Potential for unauthorized system use
+- Misconfigurations
+
+### Non-qualified vulnerabilities
+
+The following vulnerabilities and forms of documentation are generally not wanted and will be rejected:
+
+- Attacks that require physical access to a user's device or network
+- Forms with missing CSRF tokens (unless the criticality exceeds CVSS level 5)
+- Self-XSS
+- The use of a library known to be vulnerable or publicly known to be broken (unless there is active evidence of exploitability)
+- Reports from automated tools or scans without explanatory documentation
+- Social engineering targeting individuals or entities of the organization
+- Denial-of-service (DoS) or distributed denial-of-service (DDoS) attacks
+- Bots, spam, bulk registration
+- Reports of best practices that do not directly result in an exploitable vulnerability (e.g., certificate pinning, missing security headers)
+- Use of vulnerable and "weak" cipher suites/ciphers
+- Missing Rate limiting without further security impact
+
+### Legal Safe Harbor
+
+The organization gives their approval for security researchers to use hacking methods based on the specified briefing. 
+Due to this consent, the criminal liability criterion of unauthorized obtaining/unauthorized use and thus the criminal liability of the security researchers with regard to the criminal offenses in Art. 
+143 Swiss Criminal Code (Unauthorised obtaining of data) and Art. 143bis Swiss Criminal Code (Unauthorised access to a data processing system) does not apply.
+
+```
+
+
+
+# Reports:
+
+- Three roles: Triager, Program Manager, Reporter 
+- Security reports that are similar to reports submitted to HackerOne, Bugcrowd or Intigirty
+- Comments for Triager and Reporters and Customer should make sense in timeline and logic, also add datetime offeset field (in days or hours), where we have a natural behaivour, for the amount of comments always pick a random number between 0 and 10 per report
+- Make the reports reasonable for the assets of the organisation program
+- Triager may not agree with the impact specified by the reporter
+- program manager may not agree with the impact specified by the triager
+
+
+Schema:
+
+```json
+{
+  "reporter:": {
+    "id": "report_001",
+    "title": "Stored XSS in support ticket subject renders in admin portal",
+    "summary": "The subject field of newly created support tickets is not sanitized before being rendered in the admin portal. A malicious subject executes JavaScript in the context of an authenticated admin when the ticket queue is viewed.",
+    "context": {
+      "target": "https://example.com/support/tickets",
+      "environment": {
+        "browser": "Chrome 126",
+        "os": "Ubuntu 24.04",
+        "app_version": "Ruby on Rails 7.1",
+        "user_role": "authenticated standard user"
+      }
+    },
+    "steps_to_reproduce": [
+      "Login as a normal user and navigate to New Ticket.",
+      "Enter subject: <svg onload=alert(1)> and message: 'XSS test', then submit.",
+      "Confirm storage by fetching GET /api/v1/tickets/{id} and observing the raw subject persisted.",
+      "Logout. Login as an admin and open the ticket queue in the admin portal (/admin/tickets).",
+      "Observe that the alert executes when the ticket list renders the stored subject without HTML-encoding.",
+      "Repeat with payload <img src=x onerror=fetch('/admin').then(r=>r.text()).then(t=>alert(t))> to demonstrate data exfiltration risk.",
+      "Note CSP response headers (currently missing or allowing 'unsafe-inline'), which increases exploit reliability."
+    ],
+    "proof_of_concept": {
+      "http_request": "POST /api/v1/tickets {\"subject\":\"<svg onload=alert(1)>\",\"message\":\"XSS test from reporter\"}\nGET /admin/tickets?page=1",
+      "http_response_excerpt": "{\"id\":\"12345\",\"subject\":\"<svg onload=alert(1)>\",\"status\":\"open\"}\n... <td class=\"subject\"><svg onload=alert(1)></svg></td> ...",
+      "screenshots": ["report_001_admin_queue.png", "report_001_alert.png"],
+      "attachments": ["report_001_burp.log", "report_001_ticket_create_request.txt"]
+    },
+    "impact": {
+      "description": "Stored XSS on an admin-facing page allows privilege escalation to admin via session theft or CSRF token exfiltration and can be used to pivot into internal tooling.",
+      "potential_exploits": [
+        "Steal admin session cookies",
+        "Perform CSRF actions within the admin portal",
+        "Trigger arbitrary requests from the admin browser to internal hosts"
+      ],
+      "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:H/A:N",
+      "cvss_seeverity": "HIGH",
+      "cvss_score": 8.8,
+      "owasp25_category": "A03:2021 Injection"
+    },
+    "mitigation": [
+      "HTML-encode untrusted data before injecting into DOM.",
+      "Use a strict CSP (e.g., script-src 'self'; object-src 'none').",
+      "Validate and strip event handlers (onerror, onload) and dangerous tags (script, svg)."
+    ],
+    "comments": [
+      { "offset": "0h", "message": "Initial submission with PoC, steps, and screenshots. Requesting triage acknowledgment." },
+      { "offset": "4h", "message": "Added alternative fetch() payload to demonstrate data exfiltration risk. Attached proxy logs and noted missing CSP." },
+      { "offset": "2d", "message": "Follow-up: issue still reproducible on build 2025.09.12-1. Can confirm affects admin ticket list and detail views." }
+    ]
+  },
+  "triager": {
+    "status": "accepted",
+    "impact": {
+      "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:H/A:N",
+      "cvss_seeverity": "HIGH",
+      "cvss_score": 8.1,
+      "owasp25_category": "A03:2021 Injection"
+    },
+    "validation_feedback": [
+      "Reproduced in staging on Chrome 126 with an admin account.",
+      "Confirmed payload survives storage and executes without further interaction when the queue loads.",
+      "We lowered the CVSS from reporter's 8.8 to 8.1 due to limited confidentiality impact (L) and requirement for PR:L and UI:R.",
+      "Issue accepted. We will deploy templating changes and a stricter CSP."
+    ],
+    "comments": [
+      { "offset": "7h", "message": "Acknowledged. Can you confirm the exact admin path where rendering occurs and whether CSP is present?" },
+      { "offset": "1d", "message": "Reproduced on /admin/tickets and /admin/tickets/{id}. Assigning severity 8.1. Hotfix queued to escape subject field." },
+      { "offset": "3d", "message": "PR #1234 merged to staging with template escaping and CSP update. Please retest on build 2025.09.12-2." }
+    ]
+  },
+  "program_manager": {
+    "impact": {
+      "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:H/A:N",
+      "cvss_seeverity": "HIGH",
+      "cvss_score": 8.0,
+      "owasp25_category": "A03:2021 Injection"
+    },
+    "feedback": [
+      "Approve High severity; aligns with program policy for admin-context stored XSS.",
+      "Require CSP rollout across admin surfaces and retroactive sanitization of stored subjects.",
+      "Coordinate internal comms for support team to avoid opening malicious tickets in older builds."
+    ],
+    "comments": [
+      { "offset": "2d", "message": "Reviewed triage notes; severity appropriate. Scheduling fix in the next sprint." },
+      { "offset": "5d", "message": "Change advisory approved. Comms to admin team drafted and queued." }
+    ]
+  }
+}
+```

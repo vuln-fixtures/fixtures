@@ -1,0 +1,26 @@
+# Binaries
+orgloader
+*.exe
+*.dll
+*.so
+*.dylib
+
+prepare-release.sh
+
+# Go build/test outputs
+*.test
+*.out
+*.a
+
+# Build dirs
+/bin/
+/build/
+/dist/
+
+# Coverage
+coverage/
+*.cov
+
+# OS/editor noise
+.DS_Store
+*.log
