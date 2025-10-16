@@ -6,7 +6,7 @@
     "url": "https://www.glaciervaultbank.foo",
     "slug": "glacier-vault-bank-ag",
     "address": "Bergstrasse 12, 8001 Zurich, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 159\" role=\"img\" aria-label=\"GlacierVault Bank AG\"><rect width=\"160\" height=\"159\" fill=\"#0b4f6c\"/><circle cx=\"22\" cy=\"79.5\" r=\"24\" fill=\"#e0f7ff\"/><path d=\"M10 120 L22 40 L34 120 Z\" fill=\"#88d2ff\" opacity=\"0.8\"/><text x=\"48\" y=\"90\" font-family=\"Arial, sans-serif\" font-size=\"28\" fill=\"#ffffff\">GlacierVault</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 159\" role=\"img\" aria-label=\"GlacierVault Bank AG\"><defs><linearGradient id=\"g1\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#1e5a8e;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#0b4f6c;stop-opacity:1\" /></linearGradient><filter id=\"s1\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"2\" /><feOffset dx=\"0\" dy=\"2\" result=\"offsetblur\" /><feComponentTransfer><feFuncA type=\"linear\" slope=\"0.3\" /></feComponentTransfer></filter></defs><rect width=\"160\" height=\"159\" fill=\"url(#g1)\" /><circle cx=\"22\" cy=\"79.5\" r=\"24\" fill=\"#e0f7ff\" filter=\"url(#s1)\" opacity=\"0.9\" /><path d=\"M10 120 L22 40 L34 120 Z\" fill=\"#88d2ff\" filter=\"url(#s1)\" opacity=\"0.85\" /><text x=\"50\" y=\"95\" font-family=\"Arial, sans-serif\" font-size=\"20\" font-weight=\"600\" fill=\"#ffffff\">Glacier</text></svg>"
   },
   {
     "name": "Alpenlicht Medical Systems AG",
@@ -15,7 +15,7 @@
     "url": "https://www.alpenlichtmed.foo",
     "slug": "alpenlicht-medical-systems-ag",
     "address": "Höhenweg 9, 9000 St. Gallen, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 145\" role=\"img\" aria-label=\"Alpenlicht Medical Systems AG\"><rect width=\"160\" height=\"145\" rx=\"14\" fill=\"#0f766e\"/><path d=\"M10 115 C18 60, 26 60, 34 115 L10 115 Z\" fill=\"#a7f3d0\"/><circle cx=\"22\" cy=\"65\" r=\"7\" fill=\"#064e3b\"/><text x=\"48\" y=\"90\" font-family=\"Arial, sans-serif\" font-size=\"24\" fill=\"#e6fffb\">Alpenlicht</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 145\" role=\"img\" aria-label=\"Alpenlicht Medical Systems AG\"><defs><linearGradient id=\"g2\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#1a8b7f;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#0f766e;stop-opacity:1\" /></linearGradient><filter id=\"s2\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"1.5\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"145\" rx=\"14\" fill=\"url(#g2)\" /><path d=\"M10 115 C18 60, 26 60, 34 115 L10 115 Z\" fill=\"#a7f3d0\" filter=\"url(#s2)\" opacity=\"0.85\" /><circle cx=\"22\" cy=\"65\" r=\"7\" fill=\"#064e3b\" /><text x=\"50\" y=\"85\" font-family=\"Arial, sans-serif\" font-size=\"18\" font-weight=\"600\" fill=\"#e6fffb\">Alpine</text></svg>"
   },
   {
     "name": "Kanton Eichenwald Amt fuer Digitalisierung",
@@ -24,7 +24,7 @@
     "url": "https://www.eichenwald-digital.foo",
     "slug": "kanton-eichenwald-amt-fuer-digitalisierung",
     "address": "Hauptplatz 5, 6010 Eichenwald, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 154\" role=\"img\" aria-label=\"Kanton Eichenwald Amt fuer Digitalisierung\"><rect width=\"160\" height=\"154\" fill=\"#1f2937\"/><rect x=\"12\" y=\"35\" width=\"45\" height=\"58\" rx=\"7\" fill=\"#22c55e\"/><path d=\"M15 95 L28 50 L41 95 Z\" fill=\"#14532d\"/><text x=\"48\" y=\"100\" font-family=\"Arial, sans-serif\" font-size=\"20\" fill=\"#d1fae5\">Eichenwald</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 154\" role=\"img\" aria-label=\"Kanton Eichenwald Amt fuer Digitalisierung\"><defs><linearGradient id=\"g3\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#374151;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#1f2937;stop-opacity:1\" /></linearGradient><filter id=\"s3\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"1.5\" /><feOffset dx=\"1\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"154\" fill=\"url(#g3)\" /><rect x=\"12\" y=\"35\" width=\"45\" height=\"58\" rx=\"7\" fill=\"#22c55e\" filter=\"url(#s3)\" opacity=\"0.9\" /><path d=\"M15 95 L28 50 L41 95 Z\" fill=\"#14532d\" /><text x=\"50\" y=\"100\" font-family=\"Arial, sans-serif\" font-size=\"16\" font-weight=\"600\" fill=\"#d1fae5\">Eichen</text></svg>"
   },
   {
     "name": "Silberkamm Insurance AG",
@@ -33,7 +33,7 @@
     "url": "https://www.silberkamm-insurance.foo",
     "slug": "silberkamm-insurance-ag",
     "address": "Uferweg 15, 6005 Luzern, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 147\" role=\"img\" aria-label=\"Silberkamm Insurance AG\"><rect width=\"160\" height=\"147\" rx=\"14\" fill=\"#1e3a8a\"/><circle cx=\"22\" cy=\"73.5\" r=\"22\" fill=\"#93c5fd\"/><path d=\"M18 80 L22 55 L26 80 Z\" fill=\"#60a5fa\"/><text x=\"48\" y=\"90\" font-family=\"Arial, sans-serif\" font-size=\"20\" fill=\"#ffffff\">Silberkamm</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 147\" role=\"img\" aria-label=\"Silberkamm Insurance AG\"><defs><linearGradient id=\"g4\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#2563eb;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#1e3a8a;stop-opacity:1\" /></linearGradient><filter id=\"s4\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"2\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"147\" rx=\"14\" fill=\"url(#g4)\" /><circle cx=\"22\" cy=\"73.5\" r=\"22\" fill=\"#93c5fd\" filter=\"url(#s4)\" opacity=\"0.9\" /><path d=\"M18 80 L22 55 L26 80 Z\" fill=\"#60a5fa\" /><text x=\"50\" y=\"90\" font-family=\"Arial, sans-serif\" font-size=\"18\" font-weight=\"600\" fill=\"#ffffff\">Silver</text></svg>"
   },
   {
     "name": "Rheinspitze Energie GmbH",
@@ -42,7 +42,7 @@
     "url": "https://www.rheinspitze-energie.foo",
     "slug": "rheinspitze-energie-gmbh",
     "address": "Werkstrasse 18, 4057 Basel, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 153\" role=\"img\" aria-label=\"Rheinspitze Energie GmbH\"><rect width=\"160\" height=\"153\" fill=\"#92400e\"/><polygon points=\"16,35 28,75 16,115\" fill=\"#fde68a\"/><text x=\"48\" y=\"90\" font-family=\"Arial, sans-serif\" font-size=\"20\" fill=\"#ffffff\">Rheinspitze</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 153\" role=\"img\" aria-label=\"Rheinspitze Energie GmbH\"><defs><linearGradient id=\"g5\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#b45309;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#92400e;stop-opacity:1\" /></linearGradient><filter id=\"s5\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"2\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"153\" fill=\"url(#g5)\" /><polygon points=\"16,35 28,75 16,115\" fill=\"#fde68a\" filter=\"url(#s5)\" opacity=\"0.9\" /><text x=\"50\" y=\"85\" font-family=\"Arial, sans-serif\" font-size=\"16\" font-weight=\"600\" fill=\"#ffffff\">Rheinspitze</text></svg>"
   },
   {
     "name": "Zedernfeld Retail Genossenschaft",
@@ -51,7 +51,7 @@
     "url": "https://www.zedernfeld-retail.foo",
     "slug": "zedernfeld-retail-genossenschaft",
     "address": "Marktgasse 2, 3001 Bern, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 142\" role=\"img\" aria-label=\"Zedernfeld Retail Genossenschaft\"><rect width=\"160\" height=\"142\" rx=\"14\" fill=\"#166534\"/><circle cx=\"22\" cy=\"71\" r=\"18\" fill=\"#86efac\"/><text x=\"48\" y=\"85\" font-family=\"Arial, sans-serif\" font-size=\"18\" fill=\"#ecfdf5\">Zedernfeld</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 142\" role=\"img\" aria-label=\"Zedernfeld Retail Genossenschaft\"><defs><linearGradient id=\"g6\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#1f5c3a;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#166534;stop-opacity:1\" /></linearGradient><filter id=\"s6\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"1.5\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"142\" rx=\"14\" fill=\"url(#g6)\" /><circle cx=\"22\" cy=\"71\" r=\"18\" fill=\"#86efac\" filter=\"url(#s6)\" opacity=\"0.9\" /><text x=\"50\" y=\"82\" font-family=\"Arial, sans-serif\" font-size=\"16\" font-weight=\"600\" fill=\"#ecfdf5\">Zedernfeld</text></svg>"
   },
   {
     "name": "SchneeConnect Mobility AG",
@@ -60,7 +60,7 @@
     "url": "https://www.schneeconnect-mobility.foo",
     "slug": "schnee-connect-mobility-ag",
     "address": "Depotstrasse 7, 8005 Zurich, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 151\" role=\"img\" aria-label=\"SchneeConnect Mobility AG\"><rect width=\"160\" height=\"151\" fill=\"#0ea5e9\"/><path d=\"M10 75.5 H34 M22 45 L30 75.5 L22 106\" stroke=\"#e0f2fe\" stroke-width=\"5\" fill=\"none\"/><text x=\"48\" y=\"90\" font-family=\"Arial, sans-serif\" font-size=\"18\" fill=\"#ffffff\">SchneeConnect</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 151\" role=\"img\" aria-label=\"SchneeConnect Mobility AG\"><defs><linearGradient id=\"g7\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#06b6d4;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#0ea5e9;stop-opacity:1\" /></linearGradient><filter id=\"s7\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"2\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"151\" fill=\"url(#g7)\" /><path d=\"M10 75.5 H34 M22 45 L30 75.5 L22 106\" stroke=\"#e0f2fe\" stroke-width=\"5\" fill=\"none\" filter=\"url(#s7)\" stroke-linecap=\"round\" /><text x=\"50\" y=\"88\" font-family=\"Arial, sans-serif\" font-size=\"14\" font-weight=\"600\" fill=\"#ffffff\">Schnee</text></svg>"
   },
   {
     "name": "AareGuard Cyber Defense AG",
@@ -69,7 +69,7 @@
     "url": "https://www.aareguard-cyber.foo",
     "slug": "aare-guard-cyber-defense-ag",
     "address": "Aarestrasse 21, 3600 Thun, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 158\" role=\"img\" aria-label=\"AareGuard Cyber Defense AG\"><rect width=\"160\" height=\"158\" fill=\"#111827\"/><path d=\"M12 110 L28 110 L20 50 Z\" fill=\"#10b981\"/><text x=\"48\" y=\"95\" font-family=\"Arial, sans-serif\" font-size=\"18\" fill=\"#e5e7eb\">AareGuard</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 158\" role=\"img\" aria-label=\"AareGuard Cyber Defense AG\"><defs><linearGradient id=\"g8\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#1f2937;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#111827;stop-opacity:1\" /></linearGradient><filter id=\"s8\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"2\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"158\" fill=\"url(#g8)\" /><path d=\"M12 110 L28 110 L20 50 Z\" fill=\"#10b981\" filter=\"url(#s8)\" opacity=\"0.95\" /><text x=\"50\" y=\"95\" font-family=\"Arial, sans-serif\" font-size=\"16\" font-weight=\"600\" fill=\"#e5e7eb\">Aare</text></svg>"
   },
   {
     "name": "Laerchenquell Foods AG",
@@ -78,7 +78,7 @@
     "url": "https://www.laerchenquell-foods.foo",
     "slug": "laerchenquell-foods-ag",
     "address": "Bodenstrasse 4, 7310 Bad Ragaz, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 144\" role=\"img\" aria-label=\"Laerchenquell Foods AG\"><rect width=\"160\" height=\"144\" rx=\"14\" fill=\"#9a3412\"/><circle cx=\"22\" cy=\"72\" r=\"16\" fill=\"#fed7aa\"/><text x=\"48\" y=\"85\" font-family=\"Arial, sans-serif\" font-size=\"16\" fill=\"#fff7ed\">Laerchenquell</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 144\" role=\"img\" aria-label=\"Laerchenquell Foods AG\"><defs><linearGradient id=\"g9\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#b45309;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#9a3412;stop-opacity:1\" /></linearGradient><filter id=\"s9\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"1.5\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"144\" rx=\"14\" fill=\"url(#g9)\" /><circle cx=\"22\" cy=\"72\" r=\"16\" fill=\"#fed7aa\" filter=\"url(#s9)\" opacity=\"0.9\" /><text x=\"50\" y=\"85\" font-family=\"Arial, sans-serif\" font-size=\"14\" font-weight=\"600\" fill=\"#fff7ed\">Laerchen</text></svg>"
   },
   {
     "name": "Felsentor Watchworks AG",
@@ -87,7 +87,7 @@
     "url": "https://www.felsentor-watchworks.foo",
     "slug": "felsentor-watchworks-ag",
     "address": "Rue de l'Atelier 14, 2502 Biel/Bienne, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 150\" role=\"img\" aria-label=\"Felsentor Watchworks AG\"><rect width=\"160\" height=\"150\" fill=\"#1f2937\"/><circle cx=\"22\" cy=\"75\" r=\"18\" fill=\"#9ca3af\"/><rect x=\"21\" y=\"57\" width=\"2\" height=\"18\" fill=\"#374151\"/><rect x=\"22\" y=\"75\" width=\"18\" height=\"2\" fill=\"#374151\"/><text x=\"48\" y=\"90\" font-family=\"Arial, sans-serif\" font-size=\"16\" fill=\"#e5e7eb\">Felsentor</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 150\" role=\"img\" aria-label=\"Felsentor Watchworks AG\"><defs><linearGradient id=\"g10\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#374151;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#1f2937;stop-opacity:1\" /></linearGradient><radialGradient id=\"g10r\" cx=\"50%\" cy=\"50%\" r=\"50%\"><stop offset=\"0%\" style=\"stop-color:#c4b5a0;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#9ca3af;stop-opacity:1\" /></radialGradient><filter id=\"s10\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"1.5\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"150\" fill=\"url(#g10)\" /><circle cx=\"22\" cy=\"75\" r=\"18\" fill=\"url(#g10r)\" filter=\"url(#s10)\" /><rect x=\"21\" y=\"57\" width=\"2\" height=\"18\" fill=\"#1f2937\" /><rect x=\"22\" y=\"75\" width=\"18\" height=\"2\" fill=\"#1f2937\" /><text x=\"50\" y=\"88\" font-family=\"Arial, sans-serif\" font-size=\"14\" font-weight=\"600\" fill=\"#e5e7eb\">Felsentor</text></svg>"
   },
   {
     "name": "Stadt Rabenbrunn IT Dienste",
@@ -96,7 +96,7 @@
     "url": "https://www.rabenbrunn-it.foo",
     "slug": "stadt-rabenbrunn-it-dienste",
     "address": "Rathausplatz 1, 7010 Rabenbrunn, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 156\" role=\"img\" aria-label=\"Stadt Rabenbrunn IT Dienste\"><rect width=\"160\" height=\"156\" fill=\"#334155\"/><rect x=\"12\" y=\"52\" width=\"6\" height=\"36\" fill=\"#94a3b8\"/><rect x=\"20\" y=\"42\" width=\"6\" height=\"48\" fill=\"#94a3b8\"/><rect x=\"28\" y=\"30\" width=\"6\" height=\"60\" fill=\"#94a3b8\"/><text x=\"48\" y=\"90\" font-family=\"Arial, sans-serif\" font-size=\"16\" fill=\"#e2e8f0\">Rabenbrunn</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 156\" role=\"img\" aria-label=\"Stadt Rabenbrunn IT Dienste\"><defs><linearGradient id=\"g11\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#475569;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#334155;stop-opacity:1\" /></linearGradient><filter id=\"s11\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"1.5\" /><feOffset dx=\"0\" dy=\"1\" /></filter></defs><rect width=\"160\" height=\"156\" fill=\"url(#g11)\" /><rect x=\"12\" y=\"52\" width=\"6\" height=\"36\" fill=\"#94a3b8\" filter=\"url(#s11)\" /><rect x=\"20\" y=\"42\" width=\"6\" height=\"48\" fill=\"#cbd5e1\" filter=\"url(#s11)\" /><rect x=\"28\" y=\"30\" width=\"6\" height=\"60\" fill=\"#e2e8f0\" filter=\"url(#s11)\" /><text x=\"50\" y=\"90\" font-family=\"Arial, sans-serif\" font-size=\"13\" font-weight=\"600\" fill=\"#e2e8f0\">Rabenbrunn</text></svg>"
   },
   {
     "name": "HelioRail Systems AG",
@@ -105,7 +105,7 @@
     "url": "https://www.heliorail.foo",
     "slug": "helio-rail-systems-ag",
     "address": "Gleisweg 3, 5400 Baden, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 141\" role=\"img\" aria-label=\"HelioRail Systems AG\"><rect width=\"160\" height=\"141\" rx=\"12\" fill=\"#065f46\"/><path d=\"M10 105 H34 M14 35 L14 105 M22 35 L22 105 M30 35 L30 105\" stroke=\"#a7f3d0\" stroke-width=\"3\"/><text x=\"48\" y=\"85\" font-family=\"Arial, sans-serif\" font-size=\"16\" fill=\"#d1fae5\">HelioRail</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 141\" role=\"img\" aria-label=\"HelioRail Systems AG\"><defs><linearGradient id=\"g12\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#10886e;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#065f46;stop-opacity:1\" /></linearGradient><filter id=\"s12\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"1.5\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"141\" rx=\"12\" fill=\"url(#g12)\" /><path d=\"M10 105 H34 M14 35 L14 105 M22 35 L22 105 M30 35 L30 105\" stroke=\"#a7f3d0\" stroke-width=\"3\" filter=\"url(#s12)\" stroke-linecap=\"round\" /><text x=\"50\" y=\"82\" font-family=\"Arial, sans-serif\" font-size=\"14\" font-weight=\"600\" fill=\"#d1fae5\">HelioRail</text></svg>"
   },
   {
     "name": "Seefjord Health Services AG",
@@ -114,7 +114,7 @@
     "url": "https://www.seefjord-health.foo",
     "slug": "seefjord-health-services-ag",
     "address": "Seestrasse 88, 6300 Zug, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 149\" role=\"img\" aria-label=\"Seefjord Health Services AG\"><rect width=\"160\" height=\"149\" fill=\"#0f766e\"/><rect x=\"18\" y=\"40\" width=\"16\" height=\"47\" fill=\"#99f6e4\"/><rect x=\"14\" y=\"53\" width=\"24\" height=\"24\" fill=\"#99f6e4\"/><text x=\"48\" y=\"90\" font-family=\"Arial, sans-serif\" font-size=\"16\" fill=\"#ecfeff\">Seefjord</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 149\" role=\"img\" aria-label=\"Seefjord Health Services AG\"><defs><linearGradient id=\"g13\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#1a8b7f;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#0f766e;stop-opacity:1\" /></linearGradient><filter id=\"s13\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"1.5\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"149\" fill=\"url(#g13)\" /><rect x=\"18\" y=\"40\" width=\"16\" height=\"47\" fill=\"#99f6e4\" filter=\"url(#s13)\" opacity=\"0.9\" /><rect x=\"14\" y=\"56\" width=\"24\" height=\"24\" fill=\"#99f6e4\" filter=\"url(#s13)\" opacity=\"0.9\" /><text x=\"50\" y=\"88\" font-family=\"Arial, sans-serif\" font-size=\"14\" font-weight=\"600\" fill=\"#ecfeff\">Seefjord</text></svg>"
   },
   {
     "name": "Bergtal Telecom AG",
@@ -123,7 +123,7 @@
     "url": "https://www.bergtal-telecom.foo",
     "slug": "bergtal-telecom-ag",
     "address": "Fernmeldeweg 3, 8006 Zurich, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 155\" role=\"img\" aria-label=\"Bergtal Telecom AG\"><rect width=\"160\" height=\"155\" rx=\"14\" fill=\"#1d4ed8\"/><circle cx=\"22\" cy=\"77.5\" r=\"18\" fill=\"#bfdbfe\"/><text x=\"48\" y=\"90\" font-family=\"Arial, sans-serif\" font-size=\"18\" fill=\"#ffffff\">Bergtal</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 155\" role=\"img\" aria-label=\"Bergtal Telecom AG\"><defs><linearGradient id=\"g14\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#3b82f6;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#1d4ed8;stop-opacity:1\" /></linearGradient><filter id=\"s14\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"2\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"155\" rx=\"14\" fill=\"url(#g14)\" /><circle cx=\"22\" cy=\"77.5\" r=\"18\" fill=\"#bfdbfe\" filter=\"url(#s14)\" opacity=\"0.9\" /><text x=\"50\" y=\"90\" font-family=\"Arial, sans-serif\" font-size=\"16\" font-weight=\"600\" fill=\"#ffffff\">Bergtal</text></svg>"
   },
   {
     "name": "Edelquarz Pharma AG",
@@ -132,7 +132,7 @@
     "url": "https://www.edelquarz-pharma.foo",
     "slug": "edelquarz-pharma-ag",
     "address": "Laborstrasse 11, 4058 Basel, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 143\" role=\"img\" aria-label=\"Edelquarz Pharma AG\"><rect width=\"160\" height=\"143\" fill=\"#7c3aed\"/><rect x=\"14\" y=\"35\" width=\"36\" height=\"48\" rx=\"12\" fill=\"#ddd6fe\"/><text x=\"48\" y=\"85\" font-family=\"Arial, sans-serif\" font-size=\"16\" fill=\"#f5f3ff\">Edelquarz</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 143\" role=\"img\" aria-label=\"Edelquarz Pharma AG\"><defs><linearGradient id=\"g15\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#a855f7;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#7c3aed;stop-opacity:1\" /></linearGradient><filter id=\"s15\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"1.5\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"143\" fill=\"url(#g15)\" /><rect x=\"14\" y=\"35\" width=\"36\" height=\"48\" rx=\"12\" fill=\"#ddd6fe\" filter=\"url(#s15)\" opacity=\"0.9\" /><text x=\"50\" y=\"82\" font-family=\"Arial, sans-serif\" font-size=\"14\" font-weight=\"600\" fill=\"#f5f3ff\">Edelquarz</text></svg>"
   },
   {
     "name": "Sonnenhafen Airlines AG",
@@ -141,7 +141,7 @@
     "url": "https://www.sonnenhafen-airlines.foo",
     "slug": "sonnenhafen-airlines-ag",
     "address": "Flughafenring 8, 8058 Zürich-Flughafen, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 148\" role=\"img\" aria-label=\"Sonnenhafen Airlines AG\"><rect width=\"160\" height=\"148\" fill=\"#f59e0b\"/><path d=\"M10 70 L28 45 L20 100 Z\" fill=\"#fff3c4\"/><text x=\"48\" y=\"85\" font-family=\"Arial, sans-serif\" font-size=\"16\" fill=\"#1f2937\">Sonnenhafen</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 148\" role=\"img\" aria-label=\"Sonnenhafen Airlines AG\"><defs><linearGradient id=\"g16\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#f97316;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#f59e0b;stop-opacity:1\" /></linearGradient><filter id=\"s16\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"2\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"148\" fill=\"url(#g16)\" /><path d=\"M10 70 L28 45 L20 100 Z\" fill=\"#fff3c4\" filter=\"url(#s16)\" opacity=\"0.9\" /><text x=\"50\" y=\"85\" font-family=\"Arial, sans-serif\" font-size=\"14\" font-weight=\"600\" fill=\"#1f2937\">Sonnenhafen</text></svg>"
   },
   {
     "name": "Alpenquell Wasserwerke AG",
@@ -150,7 +150,7 @@
     "url": "https://www.alpenquell-wasserwerke.foo",
     "slug": "alpenquell-wasserwerke-ag",
     "address": "Quellenweg 5, 7000 Chur, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 152\" role=\"img\" aria-label=\"Alpenquell Wasserwerke AG\"><rect width=\"160\" height=\"152\" rx=\"14\" fill=\"#0ea5e9\"/><circle cx=\"22\" cy=\"76\" r=\"16\" fill=\"#e0f2fe\"/><text x=\"48\" y=\"88\" font-family=\"Arial, sans-serif\" font-size=\"16\" fill=\"#ecfeff\">Alpenquell</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 152\" role=\"img\" aria-label=\"Alpenquell Wasserwerke AG\"><defs><linearGradient id=\"g17\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#06d6d6;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#0ea5e9;stop-opacity:1\" /></linearGradient><filter id=\"s17\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"1.5\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"152\" rx=\"14\" fill=\"url(#g17)\" /><circle cx=\"22\" cy=\"76\" r=\"16\" fill=\"#e0f2fe\" filter=\"url(#s17)\" opacity=\"0.9\" /><text x=\"50\" y=\"86\" font-family=\"Arial, sans-serif\" font-size=\"14\" font-weight=\"600\" fill=\"#ecfeff\">Alpenquell</text></svg>"
   },
   {
     "name": "Kanton Waldlicht Amt fuer Bildung und Schulen",
@@ -159,7 +159,7 @@
     "url": "https://www.waldlicht-bildung.foo",
     "slug": "kanton-waldlicht-amt-fuer-bildung-und-schulen",
     "address": "Schulhausplatz 2, 6003 Luzern, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 146\" role=\"img\" aria-label=\"Kanton Waldlicht Amt fuer Bildung und Schulen\"><rect width=\"160\" height=\"146\" fill=\"#065f46\"/><rect x=\"12\" y=\"35\" width=\"36\" height=\"48\" fill=\"#99f6e4\"/><text x=\"48\" y=\"85\" font-family=\"Arial, sans-serif\" font-size=\"14\" fill=\"#d1fae5\">Waldlicht</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 146\" role=\"img\" aria-label=\"Kanton Waldlicht Amt fuer Bildung und Schulen\"><defs><linearGradient id=\"g18\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#1f9e6f;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#065f46;stop-opacity:1\" /></linearGradient><filter id=\"s18\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"1.5\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"146\" fill=\"url(#g18)\" /><rect x=\"12\" y=\"35\" width=\"36\" height=\"48\" fill=\"#99f6e4\" filter=\"url(#s18)\" opacity=\"0.9\" /><text x=\"50\" y=\"82\" font-family=\"Arial, sans-serif\" font-size=\"12\" font-weight=\"600\" fill=\"#d1fae5\">Waldlicht</text></svg>"
   },
   {
     "name": "Auenrhein Logistics AG",
@@ -168,7 +168,7 @@
     "url": "https://www.auenrhein-logistics.foo",
     "slug": "auenrhein-logistics-ag",
     "address": "Uferstrasse 21, 4057 Basel, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 157\" role=\"img\" aria-label=\"Auenrhein Logistics AG\"><rect width=\"160\" height=\"157\" fill=\"#0f172a\"/><rect x=\"14\" y=\"48\" width=\"30\" height=\"24\" fill=\"#e2e8f0\"/><text x=\"48\" y=\"90\" font-family=\"Arial, sans-serif\" font-size=\"16\" fill=\"#e2e8f0\">Auenrhein</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 157\" role=\"img\" aria-label=\"Auenrhein Logistics AG\"><defs><linearGradient id=\"g19\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#1e293b;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#0f172a;stop-opacity:1\" /></linearGradient><filter id=\"s19\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"1.5\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"157\" fill=\"url(#g19)\" /><rect x=\"14\" y=\"48\" width=\"30\" height=\"24\" fill=\"#e2e8f0\" filter=\"url(#s19)\" opacity=\"0.9\" /><text x=\"50\" y=\"90\" font-family=\"Arial, sans-serif\" font-size=\"14\" font-weight=\"600\" fill=\"#e2e8f0\">Auenrhein</text></svg>"
   },
   {
     "name": "Nebelstein Cloud Services AG",
@@ -177,7 +177,7 @@
     "url": "https://www.nebelstein-cloud.foo",
     "slug": "nebelstein-cloud-services-ag",
     "address": "Wolkenweg 9, 3012 Bern, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 140\" role=\"img\" aria-label=\"Nebelstein Cloud Services AG\"><rect width=\"160\" height=\"140\" rx=\"14\" fill=\"#334155\"/><circle cx=\"22\" cy=\"70\" r=\"14\" fill=\"#e2e8f0\"/><text x=\"48\" y=\"82\" font-family=\"Arial, sans-serif\" font-size=\"16\" fill=\"#f1f5f9\">Nebelstein</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 140\" role=\"img\" aria-label=\"Nebelstein Cloud Services AG\"><defs><linearGradient id=\"g20\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#475569;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#334155;stop-opacity:1\" /></linearGradient><filter id=\"s20\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"1.5\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"140\" rx=\"14\" fill=\"url(#g20)\" /><circle cx=\"22\" cy=\"70\" r=\"14\" fill=\"#e2e8f0\" filter=\"url(#s20)\" opacity=\"0.9\" /><text x=\"50\" y=\"80\" font-family=\"Arial, sans-serif\" font-size=\"14\" font-weight=\"600\" fill=\"#f1f5f9\">Nebelstein</text></svg>"
   },
   {
     "name": "Alpenblick Hospitality AG",
@@ -186,7 +186,7 @@
     "url": "https://www.alpenblick-hospitality.foo",
     "slug": "alpenblick-hospitality-ag",
     "address": "Promenade 18, 7260 Davos, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 160\" role=\"img\" aria-label=\"Alpenblick Hospitality AG\"><rect width=\"160\" height=\"160\" fill=\"#9a3412\"/><path d=\"M12 100 L22 50 L32 100 Z\" fill=\"#fed7aa\"/><text x=\"48\" y=\"90\" font-family=\"Arial, sans-serif\" font-size=\"16\" fill=\"#fff7ed\">Alpenblick</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 160\" role=\"img\" aria-label=\"Alpenblick Hospitality AG\"><defs><linearGradient id=\"g21\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#c2410c;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#9a3412;stop-opacity:1\" /></linearGradient><filter id=\"s21\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"2\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"160\" fill=\"url(#g21)\" /><path d=\"M12 100 L22 50 L32 100 Z\" fill=\"#fed7aa\" filter=\"url(#s21)\" opacity=\"0.9\" /><text x=\"50\" y=\"88\" font-family=\"Arial, sans-serif\" font-size=\"14\" font-weight=\"600\" fill=\"#fff7ed\">Alpenblick</text></svg>"
   },
   {
     "name": "Universitaetsspital Schwanensee",
@@ -195,7 +195,7 @@
     "url": "https://www.schwanensee-spital.foo",
     "slug": "universitaetsspital-schwanensee",
     "address": "Klinikweg 12, 9007 St. Gallen, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 159\" role=\"img\" aria-label=\"Universitaetsspital Schwanensee\"><rect width=\"160\" height=\"159\" fill=\"#0f766e\"/><rect x=\"18\" y=\"40\" width=\"16\" height=\"48\" fill=\"#99f6e4\"/><rect x=\"14\" y=\"56\" width=\"24\" height=\"24\" fill=\"#99f6e4\"/><text x=\"48\" y=\"90\" font-family=\"Arial, sans-serif\" font-size=\"16\" fill=\"#ecfeff\">Schwanensee</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 159\" role=\"img\" aria-label=\"Universitaetsspital Schwanensee\"><defs><linearGradient id=\"g22\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#1a8b7f;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#0f766e;stop-opacity:1\" /></linearGradient><filter id=\"s22\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"1.5\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"159\" fill=\"url(#g22)\" /><rect x=\"18\" y=\"40\" width=\"16\" height=\"48\" fill=\"#99f6e4\" filter=\"url(#s22)\" opacity=\"0.9\" /><rect x=\"14\" y=\"56\" width=\"24\" height=\"24\" fill=\"#99f6e4\" filter=\"url(#s22)\" opacity=\"0.9\" /><text x=\"50\" y=\"88\" font-family=\"Arial, sans-serif\" font-size=\"12\" font-weight=\"600\" fill=\"#ecfeff\">Schwanensee</text></svg>"
   },
   {
     "name": "Kanton Arvenfels Amt fuer Kultur und Medien",
@@ -204,6 +204,6 @@
     "url": "https://www.arvenfels-kultur.foo",
     "slug": "kanton-arvenfels-amt-fuer-kultur-und-medien",
     "address": "Kulturplatz 1, 7001 Chur, Switzerland",
-  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 141\" role=\"img\" aria-label=\"Kanton Arvenfels Amt fuer Kultur und Medien\"><rect width=\"160\" height=\"141\" fill=\"#1f2937\"/><rect x=\"14\" y=\"35\" width=\"36\" height=\"48\" fill=\"#fde68a\"/><text x=\"48\" y=\"82\" font-family=\"Arial, sans-serif\" font-size=\"14\" fill=\"#e5e7eb\">Arvenfels</text></svg>"
+  "logo_svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 160 141\" role=\"img\" aria-label=\"Kanton Arvenfels Amt fuer Kultur und Medien\"><defs><linearGradient id=\"g23\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\"><stop offset=\"0%\" style=\"stop-color:#374151;stop-opacity:1\" /><stop offset=\"100%\" style=\"stop-color:#1f2937;stop-opacity:1\" /></linearGradient><filter id=\"s23\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"1.5\" /><feOffset dx=\"0\" dy=\"2\" /></filter></defs><rect width=\"160\" height=\"141\" fill=\"url(#g23)\" /><rect x=\"14\" y=\"35\" width=\"36\" height=\"48\" fill=\"#fde68a\" filter=\"url(#s23)\" opacity=\"0.9\" /><text x=\"50\" y=\"80\" font-family=\"Arial, sans-serif\" font-size=\"12\" font-weight=\"600\" fill=\"#e5e7eb\">Arvenfels</text></svg>"
   }
 ]
